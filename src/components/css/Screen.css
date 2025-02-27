@@ -1,0 +1,127 @@
+.screen-container {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 380px;
+    padding: 20px;
+    margin-left: 10px;
+}
+
+.chat-dropdown {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+.dropdown-toggle {
+    width: 250px;
+    text-align: left;
+    background-color: transparent;
+    color: black;
+    align-content: space-between;
+}
+
+.dropdown-menu {
+    width: 250px;
+    padding: 0%;
+}
+
+.chat:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+    padding: none;
+    margin: 0%;
+}
+
+.dropdown-item {
+    margin: 0%;
+}
+
+h6,
+p {
+    text-align: left;
+    margin: 2px;
+}
+
+.intro-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.introduction{
+    cursor: pointer;
+}
+
+.intro-message svg {
+    margin-top: 5px;
+}
+
+.intro-message p {
+    margin-left: 30px;
+}
+
+button {
+    text-align: left;
+    margin: 5px;
+    display: flex;
+    width: 100px;
+}
+
+.btn-success {
+    background-color: #25d366;
+    width: 200px;
+    color: #fff;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #25d366;
+}
+
+.btn-outline-danger {
+    font-size: 1em;
+    color: #d63545;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.btn-outline-danger:hover {
+    background-color: #fef2f2;
+    color: #d63545;
+}
+
+.download-item {
+    margin: 0%;
+    padding: 0%;
+    width: 150px;
+}
+
+.download-item:hover {
+    background-color: #25d366;
+    color: #fff;
+    padding: none;
+    margin: 0%;
+    width: 160px;
+    border-radius: 5px;
+}
+
+.download-item li:hover{
+    width: 150px;
+
+}
+
+.download-toggle{
+    width: 200px;
+    text-align: left;
+    color: white;
+    align-content: space-between;
+}
+
+.download-toggle:hover{
+    background-color: #25d366;
+    color: #fff;
+}
+
+.download-menu{
+    width: 100px;
+}
