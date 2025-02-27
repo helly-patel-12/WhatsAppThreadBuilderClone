@@ -1,0 +1,201 @@
+.phone-container {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 380px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+button {
+    width: 20px;
+}
+
+.top-container {
+    justify-content: space-between;
+}
+
+a {
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.phone-href {
+    color: #25d366;
+    font-size: 1.2em;
+}
+
+.phone-href:hover {
+    color: #25d366;
+    font-size: 1.2em;
+}
+
+.profile-href {
+    color: #646363;
+    text-align: left;
+    font-size: 1.2em;
+}
+
+.profile-href:hover {
+    color: #646363;
+    text-align: left;
+    font-size: 1.2em;
+}
+
+.time-container {
+    align-items: center;
+}
+
+.Time {
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    padding: 5px;
+}
+
+.form-check-input {
+    transform: scale(1.5);
+    background-color: #25d366;
+}
+
+.form-check-label {
+    font-size: 1rem;
+    margin-left: 5px;
+}
+
+.form-switch {
+    margin-left: 20px;
+}
+
+.btn-secondary {
+    height: 40px;
+    margin: none;
+}
+
+.pov-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-check-input {
+    transition: background-color 0.3s ease;
+}
+
+.form-check-input:checked {
+    background-color: #25d366;
+    border-color: #25d366;
+}
+
+.form-check-input:hover {
+    background-color: #25d366;
+}
+
+.form-check-label {
+    color: #333;
+}
+
+.form-control {
+    margin-top: 5px;
+    height: 38px;
+    padding: 0%;
+    text-align: center;
+    font-size: large;
+    width: 10px;
+}
+
+.phone-type-container {
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.read-msg {
+    text-align: left;
+    color: #646363;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.user-message {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+
+.text-time-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time-group {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.msg-time {
+    width: 120px;
+    padding: 8px;
+    font-size: medium;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.msg-time:focus {
+    border-color: #5a6268;
+}
+
+.msg-period {
+    padding: 8px;
+    width: 80px;
+    font-size: medium;
+    border-radius: 5px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.msg-period:hover {
+    background-color: #5a6268;
+}
+
+.tip {
+    position: relative;
+    display: inline-block;
+}
+
+.tip .tiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #646363;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    margin-left: -160px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tip:hover .tiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.phone-frame-visible {
+    border: 5px solid #000; 
+    border-radius: 20px; 
+    /* padding: 2px;  */
+}

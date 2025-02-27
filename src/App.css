@@ -1,0 +1,24 @@
+#root {
+  max-width: 1280px;
+  text-align: center;
+}
+
+body{
+  background-color: #f3f3f3;
+  height: 100vh;
+  justify-items: center;
+}
+
+.container{
+  padding-top: 50px;
+  padding-bottom: 50px;
+  justify-content: space-between;
+  gap: 40px;
+  height: 100vh;
+  padding-top: 50px;
+}
+
+.center-container{
+  height: 855px;
+  border-radius: 10px;
+}
