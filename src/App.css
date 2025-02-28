@@ -3,13 +3,13 @@
   text-align: center;
 }
 
-body{
+body {
   background-color: #f3f3f3;
   height: 100vh;
   justify-items: center;
 }
 
-.container{
+.container {
   padding-top: 50px;
   padding-bottom: 50px;
   justify-content: space-between;
@@ -18,7 +18,8 @@ body{
   padding-top: 50px;
 }
 
-.center-container{
-  height: 855px;
+.center-container {
+  height: 865px;
   border-radius: 10px;
+  width: 420px;
 }

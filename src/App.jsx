@@ -5,7 +5,7 @@ import './components/css/Phone.css';
 import './components/css/Screen.css';
 import './components/css/Main.css';
 import './components/css/Text.css';
-import icon from './components/Images/icon.jpg';
+import logo from './components/Images/icon.jpg';
 import bg from './components/Images/chat-bg.png';
 import frame from './components/Images/frame.png';
 // import { message } from 'antd';
@@ -27,9 +27,12 @@ function App() {
   const [isIOS, setIsIOS] = useState(true);
   const [isAndroid, setIsAndroid] = useState(false);
   const [isBusiness, setIsBusiness] = useState(false);
-  const [isRead, setIsRead] = useState(false);
+  const [isRead, setIsRead] = useState(true);
   const [povType, setPovType] = useState('customer');
   const [isAttach, setIsAttach] = useState(false);
+  const [isProfile, setIsProfile] = useState(false);
+  const [isVerified, setIsVerified] = useState(null);
+  const [icon, setIcon] = useState(null);
   // const [value, setValue] = useState('simple text');
 
   const handleTimeChange = (event) => {
@@ -152,12 +155,18 @@ function App() {
   // };
 
   const onAttach = () => {
-    let target = document.getElementById("textbox");
-    if (!isAttach) {
-      target.style.color = "#027eb5";
-    } 
-  }
+    if (isAttach) {
+      setIsAttach(true);
+      let target = document.getElementById("textbox");
+      if (!isAttach) {
+        target.style.color = "#027eb5";
+      }
+    }
+    else {
+      setIsAttach(false);
 
+    }
+  };
   const toggleEmojiPicker = () => {
     setShowEmoji(!showEmoji);
   };
@@ -222,20 +231,33 @@ function App() {
   };
 
   const ClearText = () => {
-    setMessages([]);
+    if (messages.length > 0) {
+      window.confirm('Are you sure you want to clear all messages?');
+      setMessages([]);
+      setActiveMessage(null);
+    }
+    else {
+      alert('There are no messages to clear.');
+    }
+    // setMessages([]);
   };
 
   const Introduction = () => {
-    setShowIntro(!showIntro);
+    setShowIntro((prev) => !prev);
   }
 
   const handleMessageClick = (index) => {
-    const newMessages = [...messages];
-    newMessages[index].isRead = !newMessages[index].isRead;
-    setMessages(newMessages);
-    setActiveMessage(index);
-    setReplyingTo(messages[index]);
-    document.getElementById("textbox").focus();
+    if (activeMessage === index) {
+      setActiveMessage(null);
+    }
+    else {
+      const newMessages = [...messages];
+      newMessages[index].isRead = !newMessages[index].isRead;
+      setMessages(newMessages);
+      setActiveMessage(index);
+      setReplyingTo(messages[index]);
+      document.getElementById("textbox").focus();
+    }
   };
 
   const handleReply = () => {
@@ -356,34 +378,6 @@ function App() {
   //   }
   // };
 
-  const handleTick = (event) => {
-    //   const tickElement = document.getElementById("msg-tick");
-    //   if (event.target.id === 'read-msg') {
-    //     setIsRead(false);
-    //     tickElement.style.fill = '#000';
-    //     console.log('isNotRead');
-    //   } else {
-    //     setIsRead(true);
-    //     tickElement.style.color = '#3a5564';
-    //  }
-    // };
-    // if (event.target.id === 'read-msg') {
-    //   setIsRead(true);
-    //   document.getElementById("tick").style.color = '#fdfdfd';
-    //   document.getElementById("read-msg").style.color = '#000';
-    //   document.getElementById("msg-tick").style.fill = '#d4d4d8';
-
-    // }
-    // else {
-    //   setIsRead(!isRead);
-    //   document.getElementById("read-msg").style.color = '#000';
-    //   document.getElementById("tick").style.color = '#008069';
-    //   document.getElementById("msg-tick").style.fill = '#fff';
-    // }
-    // console.log(isRead);
-    setIsRead(!isRead); // Toggle read/unread state
-  };
-
   const handlePOVtype = (event) => {
     if (event.target.id === 'POVradio2') {
       setPovType('customer');
@@ -397,6 +391,52 @@ function App() {
     }
   };
 
+  const handleProfile = () => {
+    setIsProfile(true);
+    // document.getElementsByClassName('phone-href').classList.remove('active');
+    // document.getElementsByClassName('profile-href').classList.add('active');
+    document.getElementById('phone-container').style.display = 'none';
+    document.getElementById('profile-container').style.display = 'block';
+  };
+
+  const handlePhone = () => {
+    setIsProfile(false);
+    // document.getElementsByClassName('phone-href').classList.add('active');
+    // document.getElementsByClassName('profile-href').classList.remove('active');
+    document.getElementById('phone-container').style.display = 'block';
+    document.getElementById('profile-container').style.display = 'none';
+  };
+
+  const handleCompanyNameChange = (event) => {
+    document.getElementById("comp-name").textContent = event.target.value || "Company Name";
+  };
+
+  const handleCustomerNameChange = (event) => {
+    document.getElementById("cust-name").textContent = event.target.value || "Customer Name";
+  };
+
+  const handleVerifyAcc = () => {
+    if (!isVerified) {
+      document.getElementById("profile-verify").style.color = '#25d366';
+    }
+    else {
+      document.getElementById("profile-verify").style.color = '#d4d4d8';
+    }
+    setIsVerified((prev) => !prev);
+  };
+
+  const handleMsgRead = () => {
+    setIsRead((prev) => !prev);
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Creates a temporary URL for the image
+      setIcon(imageUrl);
+    }
+  };
+
   return (
     <>
       {/*   L   E   F   T                   C   O   N   T   A   I   N   E   R */}
@@ -404,14 +444,14 @@ function App() {
         <div className='left-container'>
           {/* <Phone /> */}
           <>
-            <div className='phone-container'>
+            <div className='phone-container' hidden={isProfile} id='phone-container'>
 
               <div className="d-flex top-container">
                 <div className="nav nav-underline">
-                  <a className='nav-link phone-href' aria-current="page" >Phone Settings</a>
+                  <a className='nav-link active-href' aria-current="page" >Phone Settings</a>
                 </div>
-                <div className="nav nav-underline">
-                  <a className='nav-link profile-href' role='button'> Profile Settings</a>
+                <div className="nav nav-underline" onClick={handleProfile}>
+                  <a className='nav-link deactive-href' role='button'> Profile Settings</a>
                 </div>
               </div>
 
@@ -441,7 +481,8 @@ function App() {
                   <label className="form-check-label" htmlFor="POVradio1">
                     Business POV
                   </label>
-                </div><div className="form-check">
+                </div>
+                <div className="form-check">
                   <input className="form-check-input" type="radio" name="flexRadioDefault" id="POVradio2" onChange={handlePOVtype} checked={povType === 'customer'} />
                   <label className="form-check-label" htmlFor="POVradio2">
                     Customer POV
@@ -464,12 +505,14 @@ function App() {
                     <svg className="-mt-1" width="24" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M11.9 0C12.1 1.1 11.6 2.2 11 3C10.4 3.8 9.29998 4.5 8.19998 4.4C7.99998 3.3 8.49998 2.3 9.09998 1.5C9.79998 0.7 10.9 0.1 11.9 0ZM15.1 17.4C15.6 16.6 15.9 16.1 16.3 15.2C13.2 14 12.7 9.6 15.8 8C14.9 6.8 13.6 6.2 12.3 6.2C11.4 6.2 10.8 6.4 10.2 6.6C9.69998 6.8 9.29998 6.9 8.79998 6.9C8.19998 6.9 7.79998 6.7 7.19998 6.5C6.59998 6.3 5.99998 6.1 5.29998 6.1C3.89998 6.1 2.39998 6.9 1.49998 8.4C0.199983 10.4 0.399983 14.3 2.49998 17.5C3.39998 18.7 4.39998 20 5.69998 20C6.29998 20 6.59998 19.8 6.99998 19.7C7.49998 19.5 7.99998 19.3 8.79998 19.3C9.69998 19.3 10.1 19.5 10.6 19.7C11 19.9 11.3 20 11.9 20C13.3 20 14.3 18.5 15.1 17.4Z" fill="currentColor"></path></svg>
                   </label>
                 </div>
+
                 <div className="form-check form-switch" id='phone-frame'>
                   <input className="form-check-input" type="checkbox" role="switch" id="frameflexSwitchCheckChecked" onChange={handleFrameToggleChange} />
                   <label className="form-check-label" htmlFor="frameflexSwitchCheckChecked">
                     Phone frame
                   </label>
                 </div>
+
                 <div className="tip">
                   <span className="tiptext">Switch between iOS and Android builders</span>
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.85638 6.5C6.31398 5.52901 7.54869 4.83333 9.00004 4.83333C10.841 4.83333 12.3334 5.95262 12.3334 7.33333C12.3334 8.49953 11.2687 9.47923 9.82856 9.7555C9.37657 9.84221 9.00004 10.2064 9.00004 10.6667M9 13.1667H9.00833M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#D4D4D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
@@ -478,13 +521,86 @@ function App() {
 
               <div className='user-message d-flex'>
                 <div>
-                  <a className='nav-link read-msg d-flex' id='read-msg' >
-                    <svg width="20" id='tick' height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2.5 mr-2.5 text-primary"><path fillRule="evenodd" clipRule="evenodd" d="M19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C4.61522 19.75 0.25 15.3848 0.25 10C0.25 4.61522 4.61522 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10ZM12.8343 6.57502C13.1104 6.86974 13.0953 7.33249 12.8006 7.60862L7.1813 12.8736C6.89989 13.1373 6.46207 13.1371 6.18088 12.8732L3.64955 10.4973C3.35509 10.2209 3.34043 9.75811 3.61682 9.46364C3.89321 9.16917 4.35598 9.15452 4.65045 9.4309L6.68177 11.3375L11.8007 6.54138C12.0954 6.26525 12.5581 6.28031 12.8343 6.57502ZM16.8794 7.70612C17.1741 7.42999 17.1892 6.96724 16.9131 6.67252C16.6369 6.37781 16.1742 6.36275 15.8795 6.63888L10.1362 12.02L10.0129 11.9043C9.71848 11.6279 9.25571 11.6426 8.97932 11.9371C8.70293 12.2315 8.71759 12.6943 9.01206 12.9707L9.63532 13.5557C9.91651 13.8196 10.3543 13.8198 10.6357 13.5561L16.8794 7.70612Z" fill="#d4d4d8"></path></svg>
+                  <div onClick={handleMsgRead} className='nav-link read-msg d-flex' id='read-msg' >
+                    <svg width="20" id='tick' height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: isRead ? "#d4d4d8" : "#25d366" }}>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C4.61522 19.75 0.25 15.3848 0.25 10C0.25 4.61522 4.61522 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10ZM12.8343 6.57502C13.1104 6.86974 13.0953 7.33249 12.8006 7.60862L7.1813 12.8736C6.89989 13.1373 6.46207 13.1371 6.18088 12.8732L3.64955 10.4973C3.35509 10.2209 3.34043 9.75811 3.61682 9.46364C3.89321 9.16917 4.35598 9.15452 4.65045 9.4309L6.68177 11.3375L11.8007 6.54138C12.0954 6.26525 12.5581 6.28031 12.8343 6.57502ZM16.8794 7.70612C17.1741 7.42999 17.1892 6.96724 16.9131 6.67252C16.6369 6.37781 16.1742 6.36275 15.8795 6.63888L10.1362 12.02L10.0129 11.9043C9.71848 11.6279 9.25571 11.6426 8.97932 11.9371C8.70293 12.2315 8.71759 12.6943 9.01206 12.9707L9.63532 13.5557C9.91651 13.8196 10.3543 13.8198 10.6357 13.5561L16.8794 7.70612Z" fill="currentColor"></path>
+                    </svg>
                     <p>Mark user messages as read</p>
-                  </a>
+                  </div>
                 </div>
                 <div className="tip">
                   <span className="tiptext">Toggle to display read receipts on the customer's textboxes.</span>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.85638 6.5C6.31398 5.52901 7.54869 4.83333 9.00004 4.83333C10.841 4.83333 12.3334 5.95262 12.3334 7.33333C12.3334 8.49953 11.2687 9.47923 9.82856 9.7555C9.37657 9.84221 9.00004 10.2064 9.00004 10.6667M9 13.1667H9.00833M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#D4D4D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                </div>
+              </div>
+            </div>
+
+            <div className='profile-container' hidden={!isProfile} id='profile-container'>
+
+              <div className="d-flex top-container" onClick={handlePhone}>
+                <div className="nav nav-underline">
+                  <a className='nav-link deactive-href' role='button'>Phone Settings</a>
+                </div>
+                <div className="nav nav-underline" >
+                  <a className='nav-link active-href' aria-current="page"> Profile Settings</a>
+                </div>
+              </div>
+
+              <div className="customer-header" id='customer-header'>
+                <p className="text-sm font-bold tracking-wide"><b>Customer</b></p>
+                <div className="outer-container">
+                  <div className="pic-input">
+                    <label tabIndex="0" className="pic">
+                      <span className="sr-only" hidden>Upload Logo</span>
+                      <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.97 1H18.03C17.16 1 16.52 1.36 16.23 2C16.07 2.29 16 2.63 16 3.03V5.97C16 7.24 16.76 8 18.03 8H20.97C21.37 8 21.71 7.93 22 7.77C22.64 7.48 23 6.84 23 5.97V3.03C23 1.76 22.24 1 20.97 1ZM21.91 4.93C21.81 5.03 21.66 5.1 21.5 5.11H20.09V5.62L20.1 6.5C20.09 6.67 20.03 6.81 19.91 6.93C19.81 7.03 19.66 7.1 19.5 7.1C19.17 7.1 18.9 6.83 18.9 6.5V5.1L17.5 5.11C17.17 5.11 16.9 4.83 16.9 4.5C16.9 4.17 17.17 3.9 17.5 3.9L18.38 3.91H18.9V2.51C18.9 2.18 19.17 1.9 19.5 1.9C19.83 1.9 20.1 2.18 20.1 2.51L20.09 3.22V3.9H21.5C21.83 3.9 22.1 4.17 22.1 4.5C22.09 4.67 22.02 4.81 21.91 4.93Z" fill="#25D366"></path>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M15 3.75H3.75C3.15326 3.75 2.58097 3.98705 2.15901 4.40901C1.73705 4.83097 1.5 5.40326 1.5 6V15.75V18C1.5 18.5967 1.73705 19.169 2.15901 19.591C2.58097 20.0129 3.15326 20.25 3.75 20.25H20.25C20.8467 20.25 21.419 20.0129 21.841 19.591C22.2629 19.169 22.5 18.5967 22.5 18V15.75V8.80701C22.1765 8.9403 21.8089 9 21.39 9H21V13.9393L19.3713 12.3107C19.0928 12.0321 18.762 11.8111 18.3981 11.6603C18.0341 11.5096 17.644 11.432 17.25 11.432C16.856 11.432 16.4659 11.5096 16.1019 11.6603C15.738 11.8111 15.4072 12.0321 15.1287 12.3107L14.25 13.1893L11.1213 10.0607C10.8428 9.78209 10.512 9.56111 10.1481 9.41035C9.78408 9.25958 9.39397 9.18198 9 9.18198C8.60603 9.18198 8.21592 9.25958 7.85194 9.41035C7.48796 9.56111 7.15725 9.78209 6.87867 10.0607L6.87867 10.0607L3 13.9393V6C3 5.80109 3.07902 5.61032 3.21967 5.46967C3.36032 5.32902 3.55109 5.25 3.75 5.25H15V3.75ZM3 18V16.0607L7.93933 11.1213L7.93933 11.1213C8.07862 10.982 8.24398 10.8715 8.42597 10.7962C8.60796 10.7208 8.80302 10.682 9 10.682C9.19698 10.682 9.39204 10.7208 9.57403 10.7962C9.75602 10.8715 9.92138 10.982 10.0607 11.1213L13.7197 14.7803L15.2197 16.2803C15.5126 16.5732 15.9874 16.5732 16.2803 16.2803C16.5732 15.9874 16.5732 15.5126 16.2803 15.2197L15.3107 14.25L16.1893 13.3713L15.6773 12.8593L16.1893 13.3713C16.3286 13.232 16.494 13.1215 16.676 13.0462C16.858 12.9708 17.053 12.932 17.25 12.932C17.447 12.932 17.642 12.9708 17.824 13.0462C18.006 13.1215 18.1714 13.232 18.3107 13.3713L21 16.0607V18C21 18.1989 20.921 18.3897 20.7803 18.5303C20.6397 18.671 20.4489 18.75 20.25 18.75H3.75C3.55109 18.75 3.36032 18.671 3.21967 18.5303C3.07902 18.3897 3 18.1989 3 18ZM14.25 7.125C13.9516 7.125 13.6655 7.24353 13.4545 7.4545C13.2435 7.66548 13.125 7.95163 13.125 8.25C13.125 8.54837 13.2435 8.83452 13.4545 9.0455C13.6655 9.25648 13.9516 9.375 14.25 9.375C14.5484 9.375 14.8345 9.25648 15.0455 9.0455C15.2565 8.83452 15.375 8.54837 15.375 8.25C15.375 7.95163 15.2565 7.66548 15.0455 7.4545C14.8345 7.24353 14.5484 7.125 14.25 7.125Z" fill="#25D366"></path>
+                      </svg>
+                      <input type="file" accept="image/*" className="" hidden />
+                    </label>
+                    <input type="text" placeholder="Customer Name" onInput={handleCustomerNameChange} />
+                  </div>
+                  <div className="tip">
+                    <span className="tiptext">Enter the name of the customer and choose a profile picture to display</span>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.85638 6.5C6.31398 5.52901 7.54869 4.83333 9.00004 4.83333C10.841 4.83333 12.3334 5.95262 12.3334 7.33333C12.3334 8.49953 11.2687 9.47923 9.82856 9.7555C9.37657 9.84221 9.00004 10.2064 9.00004 10.6667M9 13.1667H9.00833M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#D4D4D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="business-header" id='business-header'>
+                <p className="text-sm font-bold tracking-wide"><b>Business</b></p>
+                <div className="outer-container">
+                  <div className="pic-input">
+                    <label tabIndex="0" className="pic">
+                      <span className="sr-only" hidden>Upload Logo</span>
+                      <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.97 1H18.03C17.16 1 16.52 1.36 16.23 2C16.07 2.29 16 2.63 16 3.03V5.97C16 7.24 16.76 8 18.03 8H20.97C21.37 8 21.71 7.93 22 7.77C22.64 7.48 23 6.84 23 5.97V3.03C23 1.76 22.24 1 20.97 1ZM21.91 4.93C21.81 5.03 21.66 5.1 21.5 5.11H20.09V5.62L20.1 6.5C20.09 6.67 20.03 6.81 19.91 6.93C19.81 7.03 19.66 7.1 19.5 7.1C19.17 7.1 18.9 6.83 18.9 6.5V5.1L17.5 5.11C17.17 5.11 16.9 4.83 16.9 4.5C16.9 4.17 17.17 3.9 17.5 3.9L18.38 3.91H18.9V2.51C18.9 2.18 19.17 1.9 19.5 1.9C19.83 1.9 20.1 2.18 20.1 2.51L20.09 3.22V3.9H21.5C21.83 3.9 22.1 4.17 22.1 4.5C22.09 4.67 22.02 4.81 21.91 4.93Z" fill="#25D366"></path>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M15 3.75H3.75C3.15326 3.75 2.58097 3.98705 2.15901 4.40901C1.73705 4.83097 1.5 5.40326 1.5 6V15.75V18C1.5 18.5967 1.73705 19.169 2.15901 19.591C2.58097 20.0129 3.15326 20.25 3.75 20.25H20.25C20.8467 20.25 21.419 20.0129 21.841 19.591C22.2629 19.169 22.5 18.5967 22.5 18V15.75V8.80701C22.1765 8.9403 21.8089 9 21.39 9H21V13.9393L19.3713 12.3107C19.0928 12.0321 18.762 11.8111 18.3981 11.6603C18.0341 11.5096 17.644 11.432 17.25 11.432C16.856 11.432 16.4659 11.5096 16.1019 11.6603C15.738 11.8111 15.4072 12.0321 15.1287 12.3107L14.25 13.1893L11.1213 10.0607C10.8428 9.78209 10.512 9.56111 10.1481 9.41035C9.78408 9.25958 9.39397 9.18198 9 9.18198C8.60603 9.18198 8.21592 9.25958 7.85194 9.41035C7.48796 9.56111 7.15725 9.78209 6.87867 10.0607L6.87867 10.0607L3 13.9393V6C3 5.80109 3.07902 5.61032 3.21967 5.46967C3.36032 5.32902 3.55109 5.25 3.75 5.25H15V3.75ZM3 18V16.0607L7.93933 11.1213L7.93933 11.1213C8.07862 10.982 8.24398 10.8715 8.42597 10.7962C8.60796 10.7208 8.80302 10.682 9 10.682C9.19698 10.682 9.39204 10.7208 9.57403 10.7962C9.75602 10.8715 9.92138 10.982 10.0607 11.1213L13.7197 14.7803L15.2197 16.2803C15.5126 16.5732 15.9874 16.5732 16.2803 16.2803C16.5732 15.9874 16.5732 15.5126 16.2803 15.2197L15.3107 14.25L16.1893 13.3713L15.6773 12.8593L16.1893 13.3713C16.3286 13.232 16.494 13.1215 16.676 13.0462C16.858 12.9708 17.053 12.932 17.25 12.932C17.447 12.932 17.642 12.9708 17.824 13.0462C18.006 13.1215 18.1714 13.232 18.3107 13.3713L21 16.0607V18C21 18.1989 20.921 18.3897 20.7803 18.5303C20.6397 18.671 20.4489 18.75 20.25 18.75H3.75C3.55109 18.75 3.36032 18.671 3.21967 18.5303C3.07902 18.3897 3 18.1989 3 18ZM14.25 7.125C13.9516 7.125 13.6655 7.24353 13.4545 7.4545C13.2435 7.66548 13.125 7.95163 13.125 8.25C13.125 8.54837 13.2435 8.83452 13.4545 9.0455C13.6655 9.25648 13.9516 9.375 14.25 9.375C14.5484 9.375 14.8345 9.25648 15.0455 9.0455C15.2565 8.83452 15.375 8.54837 15.375 8.25C15.375 7.95163 15.2565 7.66548 15.0455 7.4545C14.8345 7.24353 14.5484 7.125 14.25 7.125Z" fill="#25D366"></path>
+                      </svg>
+                      <input type="file" accept="image/*" className="" hidden onChange={handleImageUpload} />
+                    </label>
+                    <input type="text" placeholder="Company Name" onInput={handleCompanyNameChange} />
+                  </div>
+                  <div className="tip">
+                    <span className="tiptext">Enter the name of the business and choose a profile picture to display</span>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.85638 6.5C6.31398 5.52901 7.54869 4.83333 9.00004 4.83333C10.841 4.83333 12.3334 5.95262 12.3334 7.33333C12.3334 8.49953 11.2687 9.47923 9.82856 9.7555C9.37657 9.84221 9.00004 10.2064 9.00004 10.6667M9 13.1667H9.00833M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#D4D4D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                  </div>
+                </div>
+              </div>
+
+
+              <div className='user-message d-flex'>
+                <div>
+                  <div onClick={handleVerifyAcc} className='nav-link read-msg d-flex' id='read-msg' >
+                    <svg id='profile-verify' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10.7466 2.4425C11.4363 1.8525 12.5659 1.8525 13.2656 2.4425L14.8451 3.80261C15.145 4.06261 15.7047 4.27258 16.1046 4.27258H17.8039C18.8636 4.27258 19.7332 5.14251 19.7332 6.20251V7.90258C19.7332 8.29258 19.9431 8.86259 20.203 9.16259L21.5625 10.7425C22.1523 11.4325 22.1523 12.5626 21.5625 13.2626L20.203 14.8425C19.9431 15.1425 19.7332 15.7025 19.7332 16.1025V17.8026C19.7332 18.8626 18.8636 19.7325 17.8039 19.7325H16.1046C15.7147 19.7325 15.145 19.9425 14.8451 20.2025L13.2656 21.5625C12.5759 22.1525 11.4463 22.1525 10.7466 21.5625L9.16721 20.2025C8.86732 19.9425 8.30752 19.7325 7.90767 19.7325H6.17831C5.1187 19.7325 4.24904 18.8626 4.24904 17.8026V16.0925C4.24904 15.7025 4.03913 15.1425 3.78922 14.8425L2.43972 13.2526C1.85994 12.5626 1.85994 11.4426 2.43972 10.7526L3.78922 9.16259C4.03913 8.86259 4.24904 8.30259 4.24904 7.91259V6.20251C4.24904 5.14251 5.1187 4.27258 6.17831 4.27258H7.90767C8.29752 4.27258 8.86732 4.06261 9.16721 3.80261L10.7466 2.4425Z" fill="currentColor"></path>
+                      <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill='currentColor'></path>
+                    </svg>
+                    <p>Display verified account icon</p>
+                  </div>
+                </div>
+                <div className="tip">
+                  <span className="tiptext">Toggle to demonstrate the verified account feature</span>
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.85638 6.5C6.31398 5.52901 7.54869 4.83333 9.00004 4.83333C10.841 4.83333 12.3334 5.95262 12.3334 7.33333C12.3334 8.49953 11.2687 9.47923 9.82856 9.7555C9.37657 9.84221 9.00004 10.2064 9.00004 10.6667M9 13.1667H9.00833M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#D4D4D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                 </div>
               </div>
@@ -520,7 +636,8 @@ function App() {
 
               <div className='intro-message'>
                 <div className='d-flex introduction' id='intro-msg' onClick={Introduction}>
-                  <svg className='m-2 ml-2.5 mr-2.5 text-primary' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" ><path d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM4.5 10.57H7.27C7.68 10.57 8.02 10.91 8.02 11.32C8.02 11.73 7.68 12.07 7.27 12.07H4.5C4.09 12.07 3.75 11.73 3.75 11.32C3.75 10.91 4.09 10.57 4.5 10.57ZM10.97 15.83H4.5C4.09 15.83 3.75 15.49 3.75 15.08C3.75 14.67 4.09 14.33 4.5 14.33H10.97C11.38 14.33 11.72 14.67 11.72 15.08C11.72 15.49 11.39 15.83 10.97 15.83ZM15.5 15.83H13.65C13.24 15.83 12.9 15.49 12.9 15.08C12.9 14.67 13.24 14.33 13.65 14.33H15.5C15.91 14.33 16.25 14.67 16.25 15.08C16.25 15.49 15.91 15.83 15.5 15.83ZM15.5 12.07H9.97C9.56 12.07 9.22 11.73 9.22 11.32C9.22 10.91 9.56 10.57 9.97 10.57H15.5C15.91 10.57 16.25 10.91 16.25 11.32C16.25 11.73 15.91 12.07 15.5 12.07Z" fill="#25d366"></path></svg>
+                  <svg className='m-2 ml-2.5 mr-2.5 text-primary' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                    <path d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM4.5 10.57H7.27C7.68 10.57 8.02 10.91 8.02 11.32C8.02 11.73 7.68 12.07 7.27 12.07H4.5C4.09 12.07 3.75 11.73 3.75 11.32C3.75 10.91 4.09 10.57 4.5 10.57ZM10.97 15.83H4.5C4.09 15.83 3.75 15.49 3.75 15.08C3.75 14.67 4.09 14.33 4.5 14.33H10.97C11.38 14.33 11.72 14.67 11.72 15.08C11.72 15.49 11.39 15.83 10.97 15.83ZM15.5 15.83H13.65C13.24 15.83 12.9 15.49 12.9 15.08C12.9 14.67 13.24 14.33 13.65 14.33H15.5C15.91 14.33 16.25 14.67 16.25 15.08C16.25 15.49 15.91 15.83 15.5 15.83ZM15.5 12.07H9.97C9.56 12.07 9.22 11.73 9.22 11.32C9.22 10.91 9.56 10.57 9.97 10.57H15.5C15.91 10.57 16.25 10.91 16.25 11.32C16.25 11.73 15.91 12.07 15.5 12.07Z" fill={showIntro ? "#25d366" : "#d4d4d8"}></path></svg>
                   <p>Display intro message</p>
                 </div>
                 <div className="tip">
@@ -568,104 +685,116 @@ function App() {
             <>
 
               <div className={`main-container ${isFrame ? 'phone-frame-visible' : ''}`}>
-              <div className="main-header" id='main-header'>
-                <div className='sub-div'>
-                  <div className="d-flex">
-                    <svg className={`back-arrow-and ${isIOS ? 'back-arrow-ios' : 'back-arrow-android'}`} id='back-arrow' width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M15.6748 10.119C16.1087 9.68504 16.1087 8.98152 15.6748 8.5476C15.2409 8.11369 14.5373 8.11369 14.1034 8.5476L7.43677 15.2143C7.00285 15.6482 7.00285 16.3517 7.43677 16.7856L14.1034 23.4523C14.5373 23.8862 15.2409 23.8862 15.6748 23.4523C16.1087 23.0184 16.1087 22.3149 15.6748 21.8809L11.2843 17.4904C11.1443 17.3504 11.2434 17.1111 11.4414 17.1111H23.778C24.3916 17.1111 24.8891 16.6136 24.8891 15.9999C24.8891 15.3863 24.3916 14.8888 23.778 14.8888H11.4414C11.2434 14.8888 11.1443 14.6495 11.2843 14.5095L15.6748 10.119Z" fill="currentColor"></path></svg>
-                    <img className='icon' src={icon} alt="" />
-                    <div>
-                      <p className="comp-name" hidden={povType === 'customer'}> Customer Name </p>
-                      <p className="bus-acc" hidden={povType === 'customer'}>online</p>
-                      <p className="comp-name" hidden={povType === 'business'}> Company Name </p>
-                      <p className="bus-acc" hidden={povType === 'business'}>Business Account</p>
+
+                <div className="main-header" id='main-header'>
+                  <div className='sub-div'>
+                    <div className="d-flex">
+                      <svg className={`back-arrow-and ${isIOS ? 'back-arrow-ios' : 'back-arrow-android'}`} id='back-arrow' width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M15.6748 10.119C16.1087 9.68504 16.1087 8.98152 15.6748 8.5476C15.2409 8.11369 14.5373 8.11369 14.1034 8.5476L7.43677 15.2143C7.00285 15.6482 7.00285 16.3517 7.43677 16.7856L14.1034 23.4523C14.5373 23.8862 15.2409 23.8862 15.6748 23.4523C16.1087 23.0184 16.1087 22.3149 15.6748 21.8809L11.2843 17.4904C11.1443 17.3504 11.2434 17.1111 11.4414 17.1111H23.778C24.3916 17.1111 24.8891 16.6136 24.8891 15.9999C24.8891 15.3863 24.3916 14.8888 23.778 14.8888H11.4414C11.2434 14.8888 11.1443 14.6495 11.2843 14.5095L15.6748 10.119Z" fill="currentColor"></path></svg>
+                      <div className="icon-container">
+                        {icon ? (
+                          <img className="icon" src={icon} alt="Uploaded Logo" />
+                        ) : (
+                          <span className="placeholder">No Image</span>
+                        )}
+                      </div>                      <div>
+                        <p className="comp-name" hidden={povType === 'customer'} id='cust-name'> Customer Name </p>
+                        <p className="bus-acc" hidden={povType === 'customer'}>online</p>
+                        <div className="d-flex">
+                          <p className="comp-name" hidden={povType === 'business'} id='comp-name'> Company Name </p>
+                          <svg id='verify-acc' hidden={!isVerified || povType === 'business'} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="">
+                            <path d="M10.7466 2.4425C11.4363 1.8525 12.5659 1.8525 13.2656 2.4425L14.8451 3.80261C15.145 4.06261 15.7047 4.27258 16.1046 4.27258H17.8039C18.8636 4.27258 19.7332 5.14251 19.7332 6.20251V7.90258C19.7332 8.29258 19.9431 8.86259 20.203 9.16259L21.5625 10.7425C22.1523 11.4325 22.1523 12.5626 21.5625 13.2626L20.203 14.8425C19.9431 15.1425 19.7332 15.7025 19.7332 16.1025V17.8026C19.7332 18.8626 18.8636 19.7325 17.8039 19.7325H16.1046C15.7147 19.7325 15.145 19.9425 14.8451 20.2025L13.2656 21.5625C12.5759 22.1525 11.4463 22.1525 10.7466 21.5625L9.16721 20.2025C8.86732 19.9425 8.30752 19.7325 7.90767 19.7325H6.17831C5.1187 19.7325 4.24904 18.8626 4.24904 17.8026V16.0925C4.24904 15.7025 4.03913 15.1425 3.78922 14.8425L2.43972 13.2526C1.85994 12.5626 1.85994 11.4426 2.43972 10.7526L3.78922 9.16259C4.03913 8.86259 4.24904 8.30259 4.24904 7.91259V6.20251C4.24904 5.14251 5.1187 4.27258 6.17831 4.27258H7.90767C8.29752 4.27258 8.86732 4.06261 9.16721 3.80261L10.7466 2.4425Z" fill="#25d366"></path>
+                            <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                          </svg>
+                        </div>
+                        <p className="bus-acc" hidden={povType === 'business'}>Business Account</p>
+                      </div>
+                    </div>
+                    <div className="right-icons">
+                      <svg width="16" height="21" hidden={povType === 'business'} viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><g clipPath="url(#shop_icon_clip_1)"><path d="M15.0001 5C15.0001 2.24 12.7601 0 10.0001 0C7.24011 0 5.00011 2.24 5.00011 5H2.87755C1.82142 5 0.947319 5.82117 0.88144 6.87524L0.197839 17.8129C0.0944869 19.4665 1.35123 20.8908 3.00486 20.9942C3.06716 20.9981 3.12957 21 3.192 21H16.5458H16.8068C18.4636 21 19.8068 19.6569 19.8068 18C19.8068 17.9376 19.8048 17.8752 19.8009 17.8129L19.1173 6.87524C19.0514 5.82117 18.1773 5 17.1212 5H15.0001ZM10.0001 2C11.6601 2 13.0001 3.34 13.0001 5H7.00011C7.00011 3.34 8.34011 2 10.0001 2ZM10.0017 12C7.61068 12 5.59939 10.41 5.03499 8.25C4.86054 7.62 5.36337 7 6.03038 7C6.51268 7 6.90262 7.34 7.03602 7.8C7.39518 9.07 8.58554 10 10.0017 10C11.4178 10 12.6081 9.07 12.9673 7.8C13.1007 7.34 13.4906 7 13.9729 7C14.6399 7 15.1325 7.62 14.9683 8.25C14.4039 10.41 12.3926 12 10.0017 12Z" fill="currentColor"></path></g></svg>
+                      <svg width="20" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><path fillRule="evenodd" clipRule="evenodd" d="M6.62 10.79C8.06 13.62 10.38 15.93 13.21 17.38L15.41 15.18C15.68 14.91 16.08 14.82 16.43 14.94C17.55 15.31 18.76 15.51 20 15.51C20.55 15.51 21 15.96 21 16.51V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="currentColor"></path><path fillRule="evenodd" clipRule="evenodd" d="M18 1C17.4477 1 17 1.44772 17 2V4H15C14.4477 4 14 4.44772 14 5C14 5.55228 14.4477 6 15 6H17V8C17 8.55228 17.4477 9 18 9C18.5523 9 19 8.55228 19 8V6H21C21.5523 6 22 5.55228 22 5C22 4.44772 21.5523 4 21 4H19V2C19 1.44772 18.5523 1 18 1Z" fill="currentColor"></path></svg>
+                      <svg width="12" height="21" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><path fillRule="evenodd" clipRule="evenodd" d="M6 8C7.1 8 8 7.1 8 6C8 4.9 7.1 4 6 4C4.9 4 4 4.9 4 6C4 7.1 4.9 8 6 8ZM6 10C4.9 10 4 10.9 4 12C4 13.1 4.9 14 6 14C7.1 14 8 13.1 8 12C8 10.9 7.1 10 6 10ZM6 16C4.9 16 4 16.9 4 18C4 19.1 4.9 20 6 20C7.1 20 8 19.1 8 18C8 16.9 7.1 16 6 16Z" fill="currentColor"></path></svg>
                     </div>
                   </div>
-                  <div className="right-icons">
-                    <svg width="16" height="21" hidden={povType === 'business'} viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><g clipPath="url(#shop_icon_clip_1)"><path d="M15.0001 5C15.0001 2.24 12.7601 0 10.0001 0C7.24011 0 5.00011 2.24 5.00011 5H2.87755C1.82142 5 0.947319 5.82117 0.88144 6.87524L0.197839 17.8129C0.0944869 19.4665 1.35123 20.8908 3.00486 20.9942C3.06716 20.9981 3.12957 21 3.192 21H16.5458H16.8068C18.4636 21 19.8068 19.6569 19.8068 18C19.8068 17.9376 19.8048 17.8752 19.8009 17.8129L19.1173 6.87524C19.0514 5.82117 18.1773 5 17.1212 5H15.0001ZM10.0001 2C11.6601 2 13.0001 3.34 13.0001 5H7.00011C7.00011 3.34 8.34011 2 10.0001 2ZM10.0017 12C7.61068 12 5.59939 10.41 5.03499 8.25C4.86054 7.62 5.36337 7 6.03038 7C6.51268 7 6.90262 7.34 7.03602 7.8C7.39518 9.07 8.58554 10 10.0017 10C11.4178 10 12.6081 9.07 12.9673 7.8C13.1007 7.34 13.4906 7 13.9729 7C14.6399 7 15.1325 7.62 14.9683 8.25C14.4039 10.41 12.3926 12 10.0017 12Z" fill="currentColor"></path></g></svg>
-                    <svg width="20" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><path fillRule="evenodd" clipRule="evenodd" d="M6.62 10.79C8.06 13.62 10.38 15.93 13.21 17.38L15.41 15.18C15.68 14.91 16.08 14.82 16.43 14.94C17.55 15.31 18.76 15.51 20 15.51C20.55 15.51 21 15.96 21 16.51V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="currentColor"></path><path fillRule="evenodd" clipRule="evenodd" d="M18 1C17.4477 1 17 1.44772 17 2V4H15C14.4477 4 14 4.44772 14 5C14 5.55228 14.4477 6 15 6H17V8C17 8.55228 17.4477 9 18 9C18.5523 9 19 8.55228 19 8V6H21C21.5523 6 22 5.55228 22 5C22 4.44772 21.5523 4 21 4H19V2C19 1.44772 18.5523 1 18 1Z" fill="currentColor"></path></svg>
-                    <svg width="12" height="21" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg" className=""><path fillRule="evenodd" clipRule="evenodd" d="M6 8C7.1 8 8 7.1 8 6C8 4.9 7.1 4 6 4C4.9 4 4 4.9 4 6C4 7.1 4.9 8 6 8ZM6 10C4.9 10 4 10.9 4 12C4 13.1 4.9 14 6 14C7.1 14 8 13.1 8 12C8 10.9 7.1 10 6 10ZM6 16C4.9 16 4 16.9 4 18C4 19.1 4.9 20 6 20C7.1 20 8 19.1 8 18C8 16.9 7.1 16 6 16Z" fill="currentColor"></path></svg>
-                  </div>
                 </div>
-              </div>
 
-              <div className="main-display">
-                <div className="chat-container d-block" style={{ backgroundImage: `url(${bg})` }}>
-                  <div className="main-content" >
-                    {showIntro && (
-                      <div className="chat-safe d-flex" id='safe'>
-                        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" ><path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd"></path></svg>
-                        <div className="d-block">
-                          <p>Messages and calls are end-to-end encrypted.
-                            <br /> No one outside of this chat, not even WhatsApp,
-                            <br /> can read or listen to them. Tap to learn more.
-                          </p>
+                <div className="main-display">
+                  <div className="chat-container d-block" style={{ backgroundImage: `url(${bg})` }}>
+                    <div className="main-content" >
+                      {showIntro && (
+                        <div className="chat-safe d-flex" id='safe'>
+                          <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" ><path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd"></path></svg>
+                          <div className="d-block">
+                            <p>Messages and calls are end-to-end encrypted.
+                              <br /> No one outside of this chat, not even WhatsApp,
+                              <br /> can read or listen to them. Tap to learn more.
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {showIntro && (
-                      <div className="chat-info d-flex" id='info'>
-                        <svg fill="none" viewBox="0 0 10 10" ><path fill="currentColor" fillRule="evenodd" d="M5 9.575c2.761 0 5-2.143 5-4.787C10 2.143 7.761 0 5 0S0 2.143 0 4.788c0 2.644 2.239 4.787 5 4.787zm-.736-7.062c0-.204.066-.372.198-.504s.31-.197.538-.197c.224 0 .402.065.535.197s.2.3.2.504a.68.68 0 01-.202.509A.73.73 0 015 3.22a.73.73 0 01-.534-.198.68.68 0 01-.202-.509zm1.358 4.663a.649.649 0 11-1.298 0V4.591a.649.649 0 111.298 0v2.585z" clipRule="evenodd" opacity="0.45"></path></svg>
-                        <div className="d-block" >
-                          <p>This business uses a secure service from
-                            <br /> Meta to manage this chat. Tap to learn more.
-                          </p>
+                      {showIntro && (
+                        <div className="chat-info d-flex" id='info'>
+                          <svg fill="none" viewBox="0 0 10 10" ><path fill="currentColor" fillRule="evenodd" d="M5 9.575c2.761 0 5-2.143 5-4.787C10 2.143 7.761 0 5 0S0 2.143 0 4.788c0 2.644 2.239 4.787 5 4.787zm-.736-7.062c0-.204.066-.372.198-.504s.31-.197.538-.197c.224 0 .402.065.535.197s.2.3.2.504a.68.68 0 01-.202.509A.73.73 0 015 3.22a.73.73 0 01-.534-.198.68.68 0 01-.202-.509zm1.358 4.663a.649.649 0 11-1.298 0V4.591a.649.649 0 111.298 0v2.585z" clipRule="evenodd" opacity="0.45"></path></svg>
+                          <div className="d-block" >
+                            <p>This business uses a secure service from
+                              <br /> Meta to manage this chat. Tap to learn more.
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    <div className="msg-content">
-                      <div className="chat-content" id="chat-content">
-                        {messages.map((msg, index) => {
-                          const messageClass = povType === 'customer' ? msg.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
-                          return (
-                            <div key={index} className={`d-grid message ${messageClass}  ${msg.isRead ? 'read' : 'unread'} ${activeMessage === index ? 'active-message' : ''}`} onClick={() => handleMessageClick(index)} >
-                              {msg.replyTo && (
-                                <div className={`reply-indicator ${msg.sender === 'user' ? 'message-user' : 'message-company'}`}>                                <span className='reply-message'>{msg.replyTo.text} </span>
-                                </div>
-                              )}
-                              <div className='d-flex'>
-                                <div className="chat-text" dangerouslySetInnerHTML={{ __html: msg.text }}></div>
-                                <div className='d-flex gap-2'>
-                                  <span className="message-time">{msg.time}
-                                    <svg className='msg-tick' id="msg-tick" hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false">
-                                      {/* <svg className={`msg-tick ${isRead ? 'read' : 'unread'}`} id="msg-tick" style={{fill: '#3a5564'}} hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false"> */}
-                                      <path d="M14.9,0.8c0.2-0.2,0.5-0.2,0.7-0.1L16,0.9c0.2,0.2,0.2,0.5,0.1,0.7L9.4,10c-0.3,0.3-0.8,0.4-1,0.1L7.3,9 c-0.2-0.2-0.2-0.5,0-0.7L7.6,8c0.2-0.2,0.5-0.2,0.7,0c0,0,0.2,0.2,0.5,0.4L14.9,0.8z M11.6,0.9c0.2,0.2,0.2,0.5,0.1,0.7L5,10 c-0.3,0.3-0.7,0.4-1,0.1l-3-3C0.8,6.9,0.8,6.6,1,6.4l0.3-0.3c0.2-0.2,0.5-0.2,0.7,0l2.4,2.3l6.2-7.6c0.2-0.2,0.5-0.2,0.7-0.1 L11.6,0.9z" fill="#000" style={{ opacity: 0.3 }}></path>
-                                    </svg>
-                                  </span>
+                      <div className="msg-content">
+                        <div className="chat-content" id="chat-content">
+                          {messages.map((msg, index) => {
+                            const messageClass = povType === 'customer' ? msg.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
+                            return (
+                              <div key={index} className={`d-grid message ${messageClass}  ${msg.isRead ? 'read' : 'unread'} ${activeMessage === index ? 'active-message' : '!active-message'}`} onClick={() => handleMessageClick(index)} >
+                                {msg.replyTo && (
+                                  <div className={`reply-indicator ${msg.sender === 'user' ? 'message-user' : 'message-company'}`}>                                <span className='reply-message'>{msg.replyTo.text} </span>
+                                  </div>
+                                )}
+                                <div className='d-flex'>
+                                  <div className="chat-text" dangerouslySetInnerHTML={{ __html: msg.text }}></div>
+                                  <div className='d-flex gap-2'>
+                                    <span className="message-time">{msg.time}
+                                      <svg className='msg-tick' id="msg-tick" hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false">
+                                        {/* <svg className={`msg-tick ${isRead ? 'read' : 'unread'}`} id="msg-tick" style={{fill: '#3a5564'}} hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false"> */}
+                                        <path d="M14.9,0.8c0.2-0.2,0.5-0.2,0.7-0.1L16,0.9c0.2,0.2,0.2,0.5,0.1,0.7L9.4,10c-0.3,0.3-0.8,0.4-1,0.1L7.3,9 c-0.2-0.2-0.2-0.5,0-0.7L7.6,8c0.2-0.2,0.5-0.2,0.7,0c0,0,0.2,0.2,0.5,0.4L14.9,0.8z M11.6,0.9c0.2,0.2,0.2,0.5,0.1,0.7L5,10 c-0.3,0.3-0.7,0.4-1,0.1l-3-3C0.8,6.9,0.8,6.6,1,6.4l0.3-0.3c0.2-0.2,0.5-0.2,0.7,0l2.4,2.3l6.2-7.6c0.2-0.2,0.5-0.2,0.7-0.1 L11.6,0.9z" fill="#000" style={{ opacity: 0.3 }}></path>
+                                      </svg>
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="d-flex chat-footer-and" id="chat-footer-and" hidden={!isIOS}>
-                <div className="chat-type-and d-flex" id="chat-type-and" hidden={!isIOS}>
-                  <svg className="chat-emoji-and" hidden={!isIOS} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0m0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10"></path>
-                    <path d="M8 7a2 2 0 1 0-.001 3.999A2 2 0 0 0 8 7M16 7a2 2 0 1 0-.001 3.999A2 2 0 0 0 16 7M15.232 15c-.693 1.195-1.87 2-3.349 2-1.477 0-2.655-.805-3.347-2H15m3-2H6a6 6 0 1 0 12 0"></path>
-                  </svg>
-                  <img className="chat-plus-ios" id="chat-plus-ios" hidden={!isAndroid} src="https://th.bing.com/th/id/OIP._SZsSmSi3yEuwcLpB6grRAAAAA?w=90&h=90&c=7&r=0&o=5&pid=1.7" alt="" />
-                  <span hidden={!isIOS} id="chat-msg">Message</span>
-                  <div className='chat-ios' id='chat-ios' hidden={!isAndroid}>  </div>
-                  {/* <img src={attach} alt="" hidden={!isAndroid} className="chat-attach-ios" id="chat-attach-ios" /> */}
-                  <div className="d-flex chat-img-and gap-3" hidden={!isIOS}>
-                    <img id="chat-attach" hidden={!isIOS} src="https://cdn1.iconfinder.com/data/icons/education-vol-1-4/512/6-512.png" alt="" />
-                    <img id="chat-cam-and" hidden={!isIOS} src="https://icon-library.com/images/camera-icon-vector/camera-icon-vector-1.jpg" alt="" />
-                    <img id="chat-cam-ios" hidden={!isAndroid} className="chat-cam-ios" src="https://th.bing.com/th?q=Camera+Blue+iOS+Whatsapp+Icon&w=120&h=120&c=1&rs=1&qlt=90&cb=1&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" alt="" />
+                <div className="d-flex chat-footer-and" id="chat-footer-and" hidden={!isIOS}>
+                  <div className="chat-type-and d-flex" id="chat-type-and" hidden={!isIOS}>
+                    <svg className="chat-emoji-and" hidden={!isIOS} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0m0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10"></path>
+                      <path d="M8 7a2 2 0 1 0-.001 3.999A2 2 0 0 0 8 7M16 7a2 2 0 1 0-.001 3.999A2 2 0 0 0 16 7M15.232 15c-.693 1.195-1.87 2-3.349 2-1.477 0-2.655-.805-3.347-2H15m3-2H6a6 6 0 1 0 12 0"></path>
+                    </svg>
+                    <img className="chat-plus-ios" id="chat-plus-ios" hidden={!isAndroid} src="https://th.bing.com/th/id/OIP._SZsSmSi3yEuwcLpB6grRAAAAA?w=90&h=90&c=7&r=0&o=5&pid=1.7" alt="" />
+                    <span hidden={!isIOS} id="chat-msg">Message</span>
+                    <div className='chat-ios' id='chat-ios' hidden={!isAndroid}>  </div>
+                    {/* <img src={attach} alt="" hidden={!isAndroid} className="chat-attach-ios" id="chat-attach-ios" /> */}
+                    <div className="d-flex chat-img-and gap-3" hidden={!isIOS}>
+                      <img id="chat-attach" hidden={!isIOS} src="https://cdn1.iconfinder.com/data/icons/education-vol-1-4/512/6-512.png" alt="" />
+                      <img id="chat-cam-and" hidden={!isIOS} src="https://icon-library.com/images/camera-icon-vector/camera-icon-vector-1.jpg" alt="" />
+                      <img id="chat-cam-ios" hidden={!isAndroid} className="chat-cam-ios" src="https://th.bing.com/th?q=Camera+Blue+iOS+Whatsapp+Icon&w=120&h=120&c=1&rs=1&qlt=90&cb=1&pid=InlineBlock&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" alt="" />
+                    </div>
+                  </div>
+                  <div className="chat-rec-and">
+                    <img id="chat-rec-and" className="chat-rec-and-img" hidden={!isIOS} src="https://th.bing.com/th/id/OIP.WqVkmT-NidqnSsEdrhf5-wHaHa?w=188&h=188&c=7&r=0&o=5&pid=1.7" alt="" />
+                    <img className="chat-rec-ios-img" id="chat-rec-ios" hidden={!isAndroid} src="https://th.bing.com/th?id=OIP.M3PjPVZ3iyWpluyKXEIctAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" />
                   </div>
                 </div>
-                <div className="chat-rec-and">
-                  <img id="chat-rec-and" className="chat-rec-and-img" hidden={!isIOS} src="https://th.bing.com/th/id/OIP.WqVkmT-NidqnSsEdrhf5-wHaHa?w=188&h=188&c=7&r=0&o=5&pid=1.7" alt="" />
-                  <img className="chat-rec-ios-img" id="chat-rec-ios" hidden={!isAndroid} src="https://th.bing.com/th?id=OIP.M3PjPVZ3iyWpluyKXEIctAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" />
-                </div>
-              </div>
-              {/* <img src='https://th.bing.com/th/id/OIP.-vVhm7eisaBhZqF1cVnVGQHaHa?rs=1&pid=ImgDetMain' alt="" /> */}
+                {/* <img src='https://th.bing.com/th/id/OIP.-vVhm7eisaBhZqF1cVnVGQHaHa?rs=1&pid=ImgDetMain' alt="" /> */}
               </div>
             </>
           </div>

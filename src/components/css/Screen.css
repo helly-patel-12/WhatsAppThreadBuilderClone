@@ -3,7 +3,7 @@
     border-radius: 20px;
     width: 380px;
     padding: 20px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 .chat-dropdown {
@@ -48,8 +48,9 @@ p {
     align-items: center;
 }
 
-.introduction{
+.introduction {
     cursor: pointer;
+    align-items: center;
 }
 
 .intro-message svg {
@@ -105,23 +106,23 @@ button {
     border-radius: 5px;
 }
 
-.download-item li:hover{
+.download-item li:hover {
     width: 150px;
 
 }
 
-.download-toggle{
+.download-toggle {
     width: 200px;
     text-align: left;
     color: white;
     align-content: space-between;
 }
 
-.download-toggle:hover{
+.download-toggle:hover {
     background-color: #25d366;
     color: #fff;
 }
 
-.download-menu{
+.download-menu {
     width: 100px;
 }
