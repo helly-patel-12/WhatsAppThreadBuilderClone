@@ -232,7 +232,6 @@ a {
     gap: 0.75rem;
 }
 
-
 .pic {
     height: 30px;
     border-radius: 50%;
@@ -246,3 +245,34 @@ a {
     display: none;
     border-radius: 50%;
 } */
+
+.image-upload-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .image-container {
+    position: relative;
+  }
+
+.uploaded-image{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.btn-close {
+    position: absolute;
+    left: 20px;
+    bottom: 15px;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    color: #cb6767;
+    opacity: 0.7;
+  }
+
+  .btn-close:hover {
+    opacity: 1;
+
+  }
