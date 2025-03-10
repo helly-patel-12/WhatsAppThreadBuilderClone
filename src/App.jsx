@@ -39,7 +39,7 @@ function App() {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isActive, setIsActive] = useState(false);  // Track active state of the button
   const [scrollPosition, setScrollPosition] = useState(0);  // Track the scroll position
-  const [showFlow, setShowFlow] = useState(false);
+  // const [showFlow, setShowFlow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [flowName, setFlowName] = useState("");
@@ -48,15 +48,36 @@ function App() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // Control dropdown state
   const [shopMessage, setShopMessage] = useState(false);
   const [shopElectronics, setShopElectronics] = useState(false);
-  const [selectedElecCategory, setSelectedElecCategory] = useState("default");
-  const categories = [
-    "Personalized Offer",
-    "Register for an event",
-    "Get feedback",
-    "Complete Sign up",
-    "Book an appointment",
-    "Get a quote",
-  ];
+  const [selectedShopCategory, setSelectedShopCategory] = useState("default");
+  const [isRegister, setIsRegister] = useState(false);
+  const [shopPhones, setShopPhones] = useState(false);
+  const [shopModels, setShopModels] = useState(false);
+  const [selectedGadget, setSelectedGadget] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const [replyMessage, setReplyMessage] = useState(null);
+
+  const categories = ["Personalized Offer", "Register for an event", "Get feedback", "Complete Sign up", "Book an appointment", "Get a quote"];
+  const ShopCategories = ["Electronics", "Books", "Fashion", "Home & Kitchen", "Sports & Fitness", "Toys & Games", "Kindle eBooks", "Grocery and more", "Beauty and Health Care", "Pets Care", "Car and Motorbike", "Others"];
+  const ElectronicsGadgets = ["Phone", "Laptop", "SmartWatch", "Tablets", "Speakers", "Cameras", "Headphones", "Computer", "Printers", "Smart Home", "Power Banks", "Others"];
+  const PhoneBrands = ["Apple", "Samsung", "OnePlus", "Google", "Redmi", "Oppo", "Vivo", "Realme", "Nokia", "Motorola", "iQOO", "Others"];
+  const PhoneModels = {
+    Apple: ["iPhone 16 Plus", "iPhone 15 Pro", "iPhone 14 Max", "iPhone 13 Pro Max", "iPhone 12 Mini", "iPhone 16 e", "iPhone 15 Plus", "iPhone 14 Pro Max", "iPhone 13 Pro ", "iPhone 12", "iPhone 11 Pro Max", "iPhone X"],
+    Samsung: ["Galaxy S23", "Galaxy S22", "Galaxy S24", "Galaxy Z Fold6", "Galaxy Z Flip6", "Galaxy A54", "Galaxy M55", "Galaxy Note 22", "Galaxy S21", "Galaxy S20", "Galaxy S10", "Galaxy A32"],
+    OnePlus: ["OnePlus 11", "OnePlus 10 Pro", "OnePlus Nord CE4", "OnePlus 12R", "OnePlus 13R", "OnePlus 14R", "OnePlus CE4 Lite", "OnePlus 9", "OnePlus 8", "OnePlus 7", "OnePlus 6", "OnePlus 5"],
+    Google: ["Pixel 8", "Pixel 7", "Pixel 6", "Pixel 5", "Pixel 4", "Pixel 3", "Pixel 2", "Pixel 1", "Pixel 9 Pro ", "Pixel 9 Pro XL", "Pixel 8 Pro", "Pixel 7a"],
+    Redmi: ["Redmi Note 12", "Redmi 11", "Redmi 10", "Redmi 9", "Redmi 8", "Redmi 14 Pro", "Redmi 13C", "Redmi 12", "Redmi 11A", "Redmi 10A", "Redmi 9A", "Redmi 8A"],
+    Oppo: ["Oppo Reno 7", "Oppo F21", "Oppo A95", "Oppo A74", "Oppo A53", "Oppo A32", "Oppo A21", "Oppo A11", "Oppo A10", "Oppo A9", "Oppo A8", "Oppo A7"],
+    Vivo: ["Vivo X80", "Vivo Y75", "Vivo V21", "Vivo V23", "Vivo Y200", "Vivo Y29", "Vivo Y33", "Vivo Y37", "Vivo Y41", "Vivo Y45", "Vivo Y49", "Vivo Y53"],
+    Realme: ["Realme 9 Pro", "Realme 8 Pro", "Realme 7 Pro", "Realme 6 Pro", "Realme 5 Pro", "Realme 4 Pro", "Realme 3 Pro", "Realme 2 Pro", "Realme 1 Pro", "Realme 9", "Realme 8", "Realme 7"],
+    Nokia: ["Nokia 9", "Nokia 8", "Nokia 7", "Nokia 6", "Nokia 5", "Nokia 4", "Nokia 3", "Nokia 2", "Nokia 1", "Nokia 10", "Nokia 11", "Nokia 12"],
+    Motorola: ["Moto G9", "Moto G8", "Moto G7", "Moto G6", "Moto G5", "Moto G4", "Moto G3", "Moto G2", "Moto G1", "Moto G10", "Moto G11", "Moto G12"],
+    iQOO: ["iQOO 9", "iQOO 8", "iQOO 7", "iQOO 6", "iQOO 5", "iQOO 4", "iQOO 3", "iQOO 2", "iQOO 1", "iQOO 10", "iQOO 11", "iQOO 12"],
+    Others: ["Xiaomi", "Huawei", "Sony", "LG", "Asus", "Lenovo", "HTC", "ZTE", "Alcatel", "TCL", "BlackBerry", "Nubia"]
+  };
+  
+
+
   // const [value, setValue] = useState('simple text');
 
   // const handleTimeChange = (event) => {
@@ -640,10 +661,17 @@ function App() {
   }, []);
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setShowModal(true);
-    setDropdownOpen(false);
-  };
+    if (category === "Personalized Offer") {
+      setSelectedCategory(category);
+      setDropdownOpen(false);
+      setShowModal(true);
+    } else {
+      setSelectedCategory(category);
+      setDropdownOpen(false);
+      alert('This category is not available in this demo.');
+    }
+
+  }
 
   const handleSubmit = () => {
     // if (!flowName || !flowDescription) {
@@ -653,15 +681,115 @@ function App() {
 
     const newMessage = {
       category: selectedCategory,
-      message: 'flowName',
+      message: 'Black Friday DEALS!',
       description: 'Black Friday is around the corner and as promised we are giving you early access to our deals. Select the best deal for the products you are interested in!',
-      link: "https://www.amazon.com",
+      link: "https://www.amazon.in/",
     };
 
     setFlowMessages([...flowMessages, newMessage]);
     setShowModal(false);
     setFlowName("");
     setFlowDescription("");
+  };
+
+  const handleTryBtn = () => {
+    setIsRegister(true);
+    setShowIntro(false);
+  }
+
+  const handleCategoryChange = (event) => {
+    setSelectedShopCategory(event.target.value);
+  };
+
+  const handleGadgetChange = (event) => {
+    setSelectedGadget(event.target.value);
+  };
+
+  const handleBrandChange = (event) => {
+    setSelectedBrand(event.target.value);
+  };
+
+  const handleModelChange = (event) => {
+    setSelectedModel(event.target.value);
+  };
+
+  const handleContinue = () => {
+    if (selectedShopCategory === "Electronics") {
+      setIsRegister(false);
+      setShopElectronics(true);
+    } else if (selectedShopCategory) {
+      alert('This category is not available in this demo.');
+    }
+    else {
+      alert("Please select a category to continue.");
+    }
+  };
+
+  const handleBack = () => {
+    if (window.confirm('You are about to go back to the main screen. Are you sure you want to continue?')) {
+      setIsRegister(false);
+      setShowIntro(true);
+    }
+  };
+
+  const handleElectronicsContinue = () => {
+    if (selectedGadget === "Phone") {
+      setShopElectronics(false);
+      setShopPhones(true);
+    } else if (selectedGadget) {
+      alert("This Gadget is currently not available.");
+    }
+    else {
+      alert("This Gadget is currently not available.");
+    }
+  };
+
+  const handleElectronicsBack = () => {
+    setIsRegister(true);
+    setShopElectronics(false);
+  }
+
+  const handlePhoneContinue = () => {
+    if (selectedBrand) {
+      setShopPhones(false);
+      setShopModels(true);
+    } else if (selectedBrand) {
+      alert('This phone brand is not available in this demo.');
+    } else {
+      alert("Please select a phone brand.");
+    }
+  };
+
+  const handlePhoneBack = () => {
+    setShopPhones(false);
+    setShopElectronics(true);
+
+  };
+
+  const handleModelContinue = () => {
+    if (selectedModel) {
+      setShopModels(false);
+      setShopMobile(true);
+    } else if (selectedBrand) {
+      alert('This phone model is not available in this demo.');
+    } else {
+      alert("Please select a phone model.");
+    }
+  };
+
+  const handleModelBack = () => {
+    setShopPhones(true);
+    setShopModels(false);
+  };
+
+  
+
+  const handleClose = () => {
+    setIsRegister(false);
+    setShopElectronics(false);
+    setShopPhones(false);
+    setShopModels(false);
+    setShowIntro(true);
   };
 
   // const handleShopMess = () => {
@@ -687,6 +815,7 @@ function App() {
   // const handleElectronicsBtn = () => {
   //   alert('Electronics category is not available in this demo.');
   // };
+  // if (!isOpen) return null;
 
   return (
     <>
@@ -1039,51 +1168,192 @@ function App() {
                       )}
 
                       <div className="msg-content" hidden={shopMessage}>
-                        <div className="chat-content" id="chat-content">
-                          {messages.map((msg, index) => {
-                            const messageClass = povType === 'customer' ? msg.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
-                            return (
-                              <div key={index} className={`d-grid message ${messageClass}  ${msg.isRead ? 'read' : 'unread'} ${activeMessage === index ? 'active-message' : '!active-message'}`} onClick={() => handleMessageClick(index)} >
-                                {msg.replyTo && (
-                                  <div className={`reply-indicator ${msg.sender === 'user' ? 'message-user' : 'message-company'}`}>
-                                    <span className='reply-message'>{msg.replyTo.text} </span>
-                                  </div>
-                                )}
-                                <div className='d-flex'>
-                                  <div className="chat-text" dangerouslySetInnerHTML={{ __html: msg.text }}></div>
-                                  <div className='d-flex gap-2'>
-                                    <span className="message-time">{msg.time}
-                                      <svg className='msg-tick' id="msg-tick" hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false">
-                                        <path d="M14.9,0.8c0.2-0.2,0.5-0.2,0.7-0.1L16,0.9c0.2,0.2,0.2,0.5,0.1,0.7L9.4,10c-0.3,0.3-0.8,0.4-1,0.1L7.3,9 c-0.2-0.2-0.2-0.5,0-0.7L7.6,8c0.2-0.2,0.5-0.2,0.7,0c0,0,0.2,0.2,0.5,0.4L14.9,0.8z M11.6,0.9c0.2,0.2,0.2,0.5,0.1,0.7L5,10 c-0.3,0.3-0.7,0.4-1,0.1l-3-3C0.8,6.9,0.8,6.6,1,6.4l0.3-0.3c0.2-0.2,0.5-0.2,0.7,0l2.4,2.3l6.2-7.6c0.2-0.2,0.5-0.2,0.7-0.1 L11.6,0.9z" fill="#000" style={{ opacity: 0.3 }}></path>
-                                      </svg>
-                                    </span>
+                        <div>
+                          <div className="chat-content" id="chat-content" hidden={isRegister || shopElectronics || shopPhones || shopModels}>
+                            {messages.map((msg, index) => {
+                              const messageClass = povType === 'customer' ? msg.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
+                              return (
+                                <div key={index} className={`d-grid message ${messageClass}  ${msg.isRead ? 'read' : 'unread'} ${activeMessage === index ? 'active-message' : '!active-message'}`} onClick={() => handleMessageClick(index)} >
+                                  {msg.replyTo && (
+                                    <div className={`reply-indicator ${msg.sender === 'user' ? 'message-user' : 'message-company'}`}>
+                                      <span className='reply-message'>{msg.replyTo.text} </span>
+                                    </div>
+                                  )}
+                                  <div className='d-flex'>
+                                    <div className="chat-text" dangerouslySetInnerHTML={{ __html: msg.text }}></div>
+                                    <div className='d-flex gap-2'>
+                                      <span className="message-time">{msg.time}
+                                        <svg className='msg-tick' id="msg-tick" hidden={msg.sender !== 'user'} version="1.1" x="0px" y="0px" viewBox="0 0 17.1 11" xmlSpace="preserve" width="16" height="16" data-read="false" data-white="false">
+                                          <path d="M14.9,0.8c0.2-0.2,0.5-0.2,0.7-0.1L16,0.9c0.2,0.2,0.2,0.5,0.1,0.7L9.4,10c-0.3,0.3-0.8,0.4-1,0.1L7.3,9 c-0.2-0.2-0.2-0.5,0-0.7L7.6,8c0.2-0.2,0.5-0.2,0.7,0c0,0,0.2,0.2,0.5,0.4L14.9,0.8z M11.6,0.9c0.2,0.2,0.2,0.5,0.1,0.7L5,10 c-0.3,0.3-0.7,0.4-1,0.1l-3-3C0.8,6.9,0.8,6.6,1,6.4l0.3-0.3c0.2-0.2,0.5-0.2,0.7,0l2.4,2.3l6.2-7.6c0.2-0.2,0.5-0.2,0.7-0.1 L11.6,0.9z" fill="#000" style={{ opacity: 0.3 }}></path>
+                                        </svg>
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        <div className="flow-messages mt-3">
-                          {flowMessages.map((mess, idx) => {
-                            const messageClass = povType === 'customer' ? mess.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
-                            return (
-                              <div key={idx} className={` flow-content-msg ${messageClass} alert `}>
-                                <img className='flow-content-image' src="https://www.stuff.tv/wp-content/uploads/sites/2/2021/08/amazon_black_friday.jpg?w=1024" alt="" />
-                                {/* <h5>{mess.message}</h5> <br /> */}
-                                <p>{mess.description}</p>
-                                <hr className="divider" />
-                                <div className="d-flex">
-                                  {mess.link && <button className='btn btn-outline shop-btn' href={mess.link} target="_blank" rel="noreferrer" >{/* onClick={handleShopMess} */}
-                                    <svg viewBox="0 0 19 18" height="18" width="19" preserveAspectRatio="xMidYMid meet" className="" version="1.1">
-                                      <title>Shop Now</title>
-                                      <path d="M14,5.41421356 L9.70710678,9.70710678 C9.31658249,10.0976311 8.68341751,10.0976311 8.29289322,9.70710678 C7.90236893,9.31658249 7.90236893,8.68341751 8.29289322,8.29289322 L12.5857864,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C15.1045695,2 16,2.8954305 16,4 L16,8 C16,8.55228475 15.5522847,9 15,9 C14.4477153,9 14,8.55228475 14,8 L14,5.41421356 Z M14,12 C14,11.4477153 14.4477153,11 15,11 C15.5522847,11 16,11.4477153 16,12 L16,13 C16,14.6568542 14.6568542,16 13,16 L5,16 C3.34314575,16 2,14.6568542 2,13 L2,5 C2,3.34314575 3.34314575,2 5,2 L6,2 C6.55228475,2 7,2.44771525 7,3 C7,3.55228475 6.55228475,4 6,4 L5,4 C4.44771525,4 4,4.44771525 4,5 L4,13 C4,13.5522847 4.44771525,14 5,14 L13,14 C13.5522847,14 14,13.5522847 14,13 L14,12 Z" fill="currentColor" fillRule="nonzero"></path></svg>
-                                    <a href="https://www.amazon.in/" >Shop Now</a>
-                                  </button>}
+                              );
+                            })}
+                            {flowMessages.map((mess, idx) => {
+                              const messageClass = povType === 'customer' ? mess.sender === 'user' ? 'message message-user' : 'message message-company' : mess.sender === 'user' ? 'message message-company' : 'message message-user';
+                              return (
+                                <div key={idx} className={` flow-content-msg ${messageClass} `}>
+                                  <h5>{mess.message}</h5>
+                                  <img className='flow-content-image' src="https://www.stuff.tv/wp-content/uploads/sites/2/2021/08/amazon_black_friday.jpg?w=1024" alt="" />
+                                  <p>{mess.description}</p>
+                                  <hr className="divider" />
+                                  <div className="shop-btn d-grid">
+                                    {mess.link && <a className='btn btn-outline ' href={mess.link} target="_blank" rel="noreferrer" >
+                                      <svg viewBox="0 0 19 18" height="18" width="19" preserveAspectRatio="xMidYMid meet" className="" version="1.1">
+                                        <title>Shop Now</title>
+                                        <path d="M14,5.41421356 L9.70710678,9.70710678 C9.31658249,10.0976311 8.68341751,10.0976311 8.29289322,9.70710678 C7.90236893,9.31658249 7.90236893,8.68341751 8.29289322,8.29289322 L12.5857864,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C15.1045695,2 16,2.8954305 16,4 L16,8 C16,8.55228475 15.5522847,9 15,9 C14.4477153,9 14,8.55228475 14,8 L14,5.41421356 Z M14,12 C14,11.4477153 14.4477153,11 15,11 C15.5522847,11 16,11.4477153 16,12 L16,13 C16,14.6568542 14.6568542,16 13,16 L5,16 C3.34314575,16 2,14.6568542 2,13 L2,5 C2,3.34314575 3.34314575,2 5,2 L6,2 C6.55228475,2 7,2.44771525 7,3 C7,3.55228475 6.55228475,4 6,4 L5,4 C4.44771525,4 4,4.44771525 4,5 L4,13 C4,13.5522847 4.44771525,14 5,14 L13,14 C13.5522847,14 14,13.5522847 14,13 L14,12 Z" fill="currentColor" fillRule="nonzero"></path></svg>
+                                      Shop Now
+                                    </a>}
+                                    {mess.link && <a className='btn btn-outline' target="_blank" rel="noreferrer" onClick={handleTryBtn}>
+                                      <svg viewBox="0 0 19 18" height="18" width="19" preserveAspectRatio="xMidYMid meet" className="" version="1.1">
+                                        <title>Try It</title>
+                                        <path d="M14,5.41421356 L9.70710678,9.70710678 C9.31658249,10.0976311 8.68341751,10.0976311 8.29289322,9.70710678 C7.90236893,9.31658249 7.90236893,8.68341751 8.29289322,8.29289322 L12.5857864,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C15.1045695,2 16,2.8954305 16,4 L16,8 C16,8.55228475 15.5522847,9 15,9 C14.4477153,9 14,8.55228475 14,8 L14,5.41421356 Z M14,12 C14,11.4477153 14.4477153,11 15,11 C15.5522847,11 16,11.4477153 16,12 L16,13 C16,14.6568542 14.6568542,16 13,16 L5,16 C3.34314575,16 2,14.6568542 2,13 L2,5 C2,3.34314575 3.34314575,2 5,2 L6,2 C6.55228475,2 7,2.44771525 7,3 C7,3.55228475 6.55228475,4 6,4 L5,4 C4.44771525,4 4,4.44771525 4,5 L4,13 C4,13.5522847 4.44771525,14 5,14 L13,14 C13.5522847,14 14,13.5522847 14,13 L14,12 Z" fill="currentColor" fillRule="nonzero"></path></svg>
+                                      Try It
+                                    </a>}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                            {replyMessage && flowMessages.map((mess, idx) => {
+                              const messageClass = povType === 'customer' ? mess.sender === 'user' ? 'message message-user' : 'message message-company' : mess.sender === 'user' ? 'message message-company' : 'message message-user';
+                              return (
+                                <div key={idx} className={` flow-content-msg ${messageClass} `}>
+                                  <p>{replyMessage.message}</p>
+                                  <h6>{replyMessage.description}</h6>
+                                </div>
+                              )
+                            })}
+                          </div>
+
+                          <div className="flow-messages mt-3" hidden={isRegister || shopElectronics || shopPhones || shopModels}>
+
+                          </div>
                         </div>
+
+                        {/* First Popup: Category Selection */}
+                        {isRegister && (
+                          <div className="popup-overlay">
+                            <div className="popup-box">
+                              <div className="d-flex popup-header">
+                                <button className="close-btn" onClick={handleClose}>X</button>
+                                <h3>Select a Category</h3>
+                              </div>
+                              <div className='popup-content d-flex'>
+                                {ShopCategories.map((category, indx) => (
+                                  <div key={indx}>
+                                    <input type="radio" name="category" id={`category-${indx}`} value={category} checked={selectedShopCategory === category} onChange={handleCategoryChange} />
+                                    <label className='popup-label' htmlFor={`category-${indx}`}>{category}</label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className='d-flex popup-footer'>
+                                <button className='btn btn-primary popup-btn' onClick={handleBack}>
+                                  <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                  Back
+                                </button>
+                                <button className='btn btn-primary popup-btn' onClick={handleContinue}>
+                                  Continue
+                                  <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Second Popup: Electronics Gadgets */}
+                        {shopElectronics && (
+                          <div className="popup-overlay">
+                            <div className="popup-box">
+                              <div className="d-flex popup-header">
+                                <button className="close-btn" onClick={handleClose}>X</button>
+                                <h3>Select an Electronics Gadget</h3>
+                              </div>
+                              <div className='popup-content d-flex'>
+                                {ElectronicsGadgets.map((gadget, indx) => (
+                                  <div key={indx}>
+                                    <input type="radio" name="gadget" id={`gadget-${indx}`} value={gadget} checked={selectedGadget === gadget} onChange={handleGadgetChange} />
+                                    <label className='popup-label' htmlFor={`gadget-${indx}`}>{gadget}</label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className='d-flex popup-footer'>
+                                <button className='btn btn-primary popup-btn' onClick={handleElectronicsBack}>
+                                  <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                  Back
+                                </button>
+                                <button className='btn btn-primary popup-btn' onClick={handleElectronicsContinue}>
+                                  Continue
+                                  <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Third Popup: Phone Brands */}
+                        {shopPhones && (
+                          <div className="popup-overlay">
+                            <div className="popup-box">
+                              <div className="d-flex popup-header">
+                                <button className="close-btn" onClick={handleClose}>X</button>
+                                <h3>Select a Phone Brand</h3>
+                              </div>
+                              <div className='popup-content d-flex'>
+                                {PhoneBrands.map((brand, indx) => (
+                                  <div key={indx}>
+                                    <input type="radio" name="brand" id={`brand-${indx}`} value={brand} checked={selectedBrand === brand} onChange={handleBrandChange} />
+                                    <label className='popup-label' htmlFor={`brand-${indx}`}>{brand}</label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className='d-flex popup-footer'>
+                                <button className='btn btn-primary popup-btn' onClick={handlePhoneBack}>
+                                  <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                  Back
+                                </button>
+                                <button className='btn btn-primary popup-btn' onClick={handlePhoneContinue}>
+                                  Continue
+                                  <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Fourth Popup: Phone Models */}
+                        {shopModels && (
+                          <div className="popup-overlay">
+                            <div className="popup-box">
+                              <div className="d-flex popup-header">
+                                <button className="close-btn" onClick={handleClose}>X</button>
+                                <h3>Select a Phone Model</h3>
+                              </div>
+                              <div className='popup-content d-flex'>
+                                {selectedBrand && PhoneModels[selectedBrand]?.map((model, indx) => (
+                                  <div key={indx}>
+                                    <input type="radio" name="model" id={`model-${indx}`} value={model} checked={selectedModel === model} onChange={handleModelChange} />
+                                    <label className='popup-label' htmlFor={`model-${indx}`}>{model}</label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className='d-flex popup-footer'>
+                                <button className='btn btn-primary popup-btn' onClick={handleModelBack}>
+                                  <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                  Back
+                                </button>
+                                <button className='btn btn-primary popup-btn' onClick={handleModelContinue}>
+                                  Continue
+                                  <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Fifth Popup: Phone Models */}
                       </div>
                       {/* <div className="flow-shop-message" id='flow-shop-message' hidden={!shopMessage} >
                         <div className="flow-shop-list" >
@@ -1265,7 +1535,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-
                 <div className="d-flex chat-footer-and" id="chat-footer-and" hidden={!isIOS}>
                   <div className="chat-type-and d-flex" id="chat-type-and">
                     <svg className="chat-emoji-and" hidden={!isIOS} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -1287,6 +1556,7 @@ function App() {
                     <img className="chat-rec-ios-img" id="chat-rec-ios" hidden={!isAndroid} src="https://th.bing.com/th?id=OIP.M3PjPVZ3iyWpluyKXEIctAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" />
                   </div>
                 </div>
+
                 {/* <img src='https://th.bing.com/th/id/OIP.-vVhm7eisaBhZqF1cVnVGQHaHa?rs=1&pid=ImgDetMain' alt="" /> */}
               </div>
             </>
@@ -1395,440 +1665,6 @@ function App() {
                             <span onClick={() => addEmoji('😁')}>😁</span>
                             <span onClick={() => addEmoji('😆')}>😆</span>
                             <span onClick={() => addEmoji('😅')}>😅</span>
-                            <span onClick={() => addEmoji('😂')}>😂</span>
-                            <span onClick={() => addEmoji('🤣')}>🤣</span>
-                            <span onClick={() => addEmoji('🥲')}>🥲</span>
-                            <span onClick={() => addEmoji('🥹')}>🥹</span>
-                            <span onClick={() => addEmoji('😉')}>😉</span>
-                            <span onClick={() => addEmoji('😊')}>😊</span>
-                            <span onClick={() => addEmoji('😇')}>😇</span>
-                            <span onClick={() => addEmoji('🙂')}>🙂</span>
-                            <span onClick={() => addEmoji('🙃')}>🙃</span>
-                            <span onClick={() => addEmoji('😌')}>😌</span>
-                            <span onClick={() => addEmoji('😍')}>😍</span>
-                            <span onClick={() => addEmoji('🥰')}>🥰</span>
-                            <span onClick={() => addEmoji('😘')}>😘</span>
-                            <span onClick={() => addEmoji('😗')}>😗</span>
-                            <span onClick={() => addEmoji('😙')}>😙</span>
-                            <span onClick={() => addEmoji('😚')}>😚</span>
-                            <span onClick={() => addEmoji('😋')}>😋</span>
-                            <span onClick={() => addEmoji('😛')}>😛</span>
-                            <span onClick={() => addEmoji('😝')}>😝</span>
-                            <span onClick={() => addEmoji('😜')}>😜</span>
-                            <span onClick={() => addEmoji('🤪')}>🤪</span>
-                            <span onClick={() => addEmoji('🤨')}>🤨</span>
-                            <span onClick={() => addEmoji('🧐')}>🧐</span>
-                            <span onClick={() => addEmoji('🤓')}>🤓</span>
-                            <span onClick={() => addEmoji('😎')}>😎</span>
-                            <span onClick={() => addEmoji('🥸')}>🥸</span>
-                            <span onClick={() => addEmoji('🤩')}>🤩</span>
-                            <span onClick={() => addEmoji('🥳')}>🥳</span>
-                            <span onClick={() => addEmoji('🙂')}>🙂</span>
-                            <span onClick={() => addEmoji('😏')}>😏</span>
-                            <span onClick={() => addEmoji('😒')}>😒</span>
-                            <span onClick={() => addEmoji('🙂')}>🙂</span>
-                            <span onClick={() => addEmoji('😞')}>😞</span>
-                            <span onClick={() => addEmoji('😔')}>😔</span>
-                            <span onClick={() => addEmoji('😟')}>😟</span>
-                            <span onClick={() => addEmoji('😕')}>😕</span>
-                            <span onClick={() => addEmoji('🙁')}>🙁</span>
-                            <span onClick={() => addEmoji('☹️')}>☹️</span>
-                            <span onClick={() => addEmoji('😣')}>😣</span>
-                            <span onClick={() => addEmoji('😖')}>😖</span>
-                            <span onClick={() => addEmoji('😫')}>😫</span>
-                            <span onClick={() => addEmoji('😩')}>😩</span>
-                            <span onClick={() => addEmoji('🥺')}>🥺</span>
-                            <span onClick={() => addEmoji('😢')}>😢</span>
-                            <span onClick={() => addEmoji('😭')}>😭</span>
-                            <span onClick={() => addEmoji('😮')}>😮</span>
-                            <span onClick={() => addEmoji('😤')}>😤</span>
-                            <span onClick={() => addEmoji('😠')}>😠</span>
-                            <span onClick={() => addEmoji('😡')}>😡</span>
-                            <span onClick={() => addEmoji('🤬')}>🤬</span>
-                            <span onClick={() => addEmoji('🤯')}>🤯</span>
-                            <span onClick={() => addEmoji('😳')}>😳</span>
-                            <span onClick={() => addEmoji('🥵')}>🥵</span>
-                            <span onClick={() => addEmoji('🥶')}>🥶</span>
-                            <span onClick={() => addEmoji('😱')}>😱</span>
-                            <span onClick={() => addEmoji('😨')}>😨</span>
-                            <span onClick={() => addEmoji('😰')}>😰</span>
-                            <span onClick={() => addEmoji('😥')}>😥</span>
-                            <span onClick={() => addEmoji('😓')}>😓</span>
-                            <span onClick={() => addEmoji('🫣')}>🫣</span>
-                            <span onClick={() => addEmoji('🤗')}>🤗</span>
-                            <span onClick={() => addEmoji('🫡')}>🫡</span>
-                            <span onClick={() => addEmoji('🤔')}>🤔</span>
-                            <span onClick={() => addEmoji('🫢')}>🫢</span>
-                            <span onClick={() => addEmoji('🤭')}>🤭</span>
-                            <span onClick={() => addEmoji('🤫')}>🤫</span>
-                            <span onClick={() => addEmoji('🤥')}>🤥</span>
-                            <span onClick={() => addEmoji('😶')}>😶</span>
-                            <span onClick={() => addEmoji('😶')}>😶</span>
-                            <span onClick={() => addEmoji('😐')}>😐</span>
-                            <span onClick={() => addEmoji('😑')}>😑</span>
-                            <span onClick={() => addEmoji('😬')}>😬</span>
-                            <span onClick={() => addEmoji('🫨')}>🫨</span>
-                            <span onClick={() => addEmoji('🫠')}>🫠</span>
-                            <span onClick={() => addEmoji('🙄')}>🙄</span>
-                            <span onClick={() => addEmoji('😯')}>😯</span>
-                            <span onClick={() => addEmoji('😦')}>😦</span>
-                            <span onClick={() => addEmoji('😧')}>😧</span>
-                            <span onClick={() => addEmoji('😮')}>😮</span>
-                            <span onClick={() => addEmoji('😲')}>😲</span>
-                            <span onClick={() => addEmoji('🥱')}>🥱</span>
-                            <span onClick={() => addEmoji('😴')}>😴</span>
-                            <span onClick={() => addEmoji('🤤')}>🤤</span>
-                            <span onClick={() => addEmoji('😪')}>😪</span>
-                            <span onClick={() => addEmoji('😵')}>😵</span>
-                            <span onClick={() => addEmoji('😵')}>😵</span>
-                            <span onClick={() => addEmoji('🫥')}>🫥</span>
-                            <span onClick={() => addEmoji('🤐')}>🤐</span>
-                            <span onClick={() => addEmoji('🥴')}>🥴</span>
-                            <span onClick={() => addEmoji('🤢')}>🤢</span>
-                            <span onClick={() => addEmoji('🤮')}>🤮</span>
-                            <span onClick={() => addEmoji('🤧')}>🤧</span>
-                            <span onClick={() => addEmoji('😷')}>😷</span>
-                            <span onClick={() => addEmoji('🤒')}>🤒</span>
-                            <span onClick={() => addEmoji('🤕')}>🤕</span>
-                            <span onClick={() => addEmoji('🤑')}>🤑</span>
-                            <span onClick={() => addEmoji('🤠')}>🤠</span>
-                            <span onClick={() => addEmoji('😈')}>😈</span>
-                            <span onClick={() => addEmoji('👿')}>👿</span>
-                            <span onClick={() => addEmoji('👹')}>👹</span>
-                            <span onClick={() => addEmoji('👺')}>👺</span>
-                            <span onClick={() => addEmoji('🤡')}>🤡</span>
-                            <span onClick={() => addEmoji('💩')}>💩</span>
-                            <span onClick={() => addEmoji('👻')}>👻</span>
-                            <span onClick={() => addEmoji('💀')}>💀</span>
-                            <span onClick={() => addEmoji('☠️')}>☠️</span>
-                            <span onClick={() => addEmoji('👽')}>👽</span>
-                            <span onClick={() => addEmoji('👾')}>👾</span>
-                            <span onClick={() => addEmoji('🤖')}>🤖</span>
-                            <span onClick={() => addEmoji('🎃')}>🎃</span>
-                            <span onClick={() => addEmoji('😺')}>😺</span>
-                            <span onClick={() => addEmoji('😸')}>😸</span>
-                            <span onClick={() => addEmoji('😹')}>😹</span>
-                            <span onClick={() => addEmoji('😻')}>😻</span>
-                            <span onClick={() => addEmoji('😼')}>😼</span>
-                            <span onClick={() => addEmoji('😽')}>😽</span>
-                            <span onClick={() => addEmoji('🙀')}>🙀</span>
-                            <span onClick={() => addEmoji('😿')}>😿</span>
-                            <span onClick={() => addEmoji('😾')}>😾</span>
-                            <span onClick={() => addEmoji('👋')}>👋</span>
-                            <span onClick={() => addEmoji('🤚')}>🤚</span>
-                            <span onClick={() => addEmoji('🖐')}>🖐</span>
-                            <span onClick={() => addEmoji('✋')}>✋</span>
-                            <span onClick={() => addEmoji('🖖')}>🖖</span>
-                            <span onClick={() => addEmoji('👌')}>👌</span>
-                            <span onClick={() => addEmoji('🤌')}>🤌</span>
-                            <span onClick={() => addEmoji('🤏')}>🤏</span>
-                            <span onClick={() => addEmoji('✌️')}>✌️</span>
-                            <span onClick={() => addEmoji('🤞')}>🤞</span>
-                            <span onClick={() => addEmoji('🫰')}>🫰</span>
-                            <span onClick={() => addEmoji('🤟')}>🤟</span>
-                            <span onClick={() => addEmoji('🤘')}>🤘</span>
-                            <span onClick={() => addEmoji('🤙')}>🤙</span>
-                            <span onClick={() => addEmoji('🫵')}>🫵</span>
-                            <span onClick={() => addEmoji('🫱')}>🫱</span>
-                            <span onClick={() => addEmoji('🫲')}>🫲</span>
-                            <span onClick={() => addEmoji('🫸')}>🫸</span>
-                            <span onClick={() => addEmoji('🫷')}>🫷</span>
-                            <span onClick={() => addEmoji('🫳')}>🫳</span>
-                            <span onClick={() => addEmoji('🫴')}>🫴</span>
-                            <span onClick={() => addEmoji('👈')}>👈</span>
-                            <span onClick={() => addEmoji('👉')}>👉</span>
-                            <span onClick={() => addEmoji('👆')}>👆</span>
-                            <span onClick={() => addEmoji('🖕')}>🖕</span>
-                            <span onClick={() => addEmoji('👇')}>👇</span>
-                            <span onClick={() => addEmoji('☝️')}>☝️</span>
-                            <span onClick={() => addEmoji('👍')}>👍</span>
-                            <span onClick={() => addEmoji('👎')}>👎</span>
-                            <span onClick={() => addEmoji('✊')}>✊</span>
-                            <span onClick={() => addEmoji('👊')}>👊</span>
-                            <span onClick={() => addEmoji('🤛')}>🤛</span>
-                            <span onClick={() => addEmoji('🤜')}>🤜</span>
-                            <span onClick={() => addEmoji('👏')}>👏</span>
-                            <span onClick={() => addEmoji('🫶')}>🫶</span>
-                            <span onClick={() => addEmoji('🙌')}>🙌</span>
-                            <span onClick={() => addEmoji('👐')}>👐</span>
-                            <span onClick={() => addEmoji('🤲')}>🤲</span>
-                            <span onClick={() => addEmoji('🤝')}>🤝</span>
-                            <span onClick={() => addEmoji('🙏')}>🙏</span>
-                            <span onClick={() => addEmoji('✍️')}>✍️</span>
-                            <span onClick={() => addEmoji('💅')}>💅</span>
-                            <span onClick={() => addEmoji('🤳')}>🤳</span>
-                            <span onClick={() => addEmoji('🍏')}>🍏</span>
-                            <span onClick={() => addEmoji('🍎')}>🍎</span>
-                            <span onClick={() => addEmoji('🍐')}>🍐</span>
-                            <span onClick={() => addEmoji('🍊')}>🍊</span>
-                            <span onClick={() => addEmoji('🍋')}>🍋</span>
-                            <span onClick={() => addEmoji('🍌')}>🍌</span>
-                            <span onClick={() => addEmoji('🍉')}>🍉</span>
-                            <span onClick={() => addEmoji('🍇')}>🍇</span>
-                            <span onClick={() => addEmoji('🍓')}>🍓</span>
-                            <span onClick={() => addEmoji('🫐')}>🫐</span>
-                            <span onClick={() => addEmoji('🍈')}>🍈</span>
-                            <span onClick={() => addEmoji('🍒')}>🍒</span>
-                            <span onClick={() => addEmoji('🍑')}>🍑</span>
-                            <span onClick={() => addEmoji('🥭')}>🥭</span>
-                            <span onClick={() => addEmoji('🍍')}>🍍</span>
-                            <span onClick={() => addEmoji('🥥')}>🥥</span>
-                            <span onClick={() => addEmoji('🥝')}>🥝</span>
-                            <span onClick={() => addEmoji('🍅')}>🍅</span>
-                            <span onClick={() => addEmoji('🍆')}>🍆</span>
-                            <span onClick={() => addEmoji('🥑')}>🥑</span>
-                            <span onClick={() => addEmoji('🥦')}>🥦</span>
-                            <span onClick={() => addEmoji('🫛')}>🫛</span>
-                            <span onClick={() => addEmoji('🥬')}>🥬</span>
-                            <span onClick={() => addEmoji('🥒')}>🥒</span>
-                            <span onClick={() => addEmoji('🌶')}>🌶</span>
-                            <span onClick={() => addEmoji('🫑')}>🫑</span>
-                            <span onClick={() => addEmoji('🌽')}>🌽</span>
-                            <span onClick={() => addEmoji('🥕')}>🥕</span>
-                            <span onClick={() => addEmoji('🫒')}>🫒</span>
-                            <span onClick={() => addEmoji('🧄')}>🧄</span>
-                            <span onClick={() => addEmoji('🧅')}>🧅</span>
-                            <span onClick={() => addEmoji('🫚')}>🫚</span>
-                            <span onClick={() => addEmoji('🥔')}>🥔</span>
-                            <span onClick={() => addEmoji('🍠')}>🍠</span>
-                            <span onClick={() => addEmoji('🫘')}>🫘</span>
-                            <span onClick={() => addEmoji('🥐')}>🥐</span>
-                            <span onClick={() => addEmoji('🥯')}>🥯</span>
-                            <span onClick={() => addEmoji('🍞')}>🍞</span>
-                            <span onClick={() => addEmoji('🥖')}>🥖</span>
-                            <span onClick={() => addEmoji('🥨')}>🥨</span>
-                            <span onClick={() => addEmoji('🧀')}>🧀</span>
-                            <span onClick={() => addEmoji('🥚')}>🥚</span>
-                            <span onClick={() => addEmoji('🍳')}>🍳</span>
-                            <span onClick={() => addEmoji('🧈')}>🧈</span>
-                            <span onClick={() => addEmoji('🥞')}>🥞</span>
-                            <span onClick={() => addEmoji('🧇')}>🧇</span>
-                            <span onClick={() => addEmoji('🥓')}>🥓</span>
-                            <span onClick={() => addEmoji('🥩')}>🥩</span>
-                            <span onClick={() => addEmoji('🍗')}>🍗</span>
-                            <span onClick={() => addEmoji('🍖')}>🍖</span>
-                            <span onClick={() => addEmoji('🦴')}>🦴</span>
-                            <span onClick={() => addEmoji('🌭')}>🌭</span>
-                            <span onClick={() => addEmoji('🍔')}>🍔</span>
-                            <span onClick={() => addEmoji('🍟')}>🍟</span>
-                            <span onClick={() => addEmoji('🍕')}>🍕</span>
-                            <span onClick={() => addEmoji('🫓')}>🫓</span>
-                            <span onClick={() => addEmoji('🥪')}>🥪</span>
-                            <span onClick={() => addEmoji('🥙')}>🥙</span>
-                            <span onClick={() => addEmoji('🧆')}>🧆</span>
-                            <span onClick={() => addEmoji('🌮')}>🌮</span>
-                            <span onClick={() => addEmoji('🌯')}>🌯</span>
-                            <span onClick={() => addEmoji('🫔')}>🫔</span>
-                            <span onClick={() => addEmoji('🥗')}>🥗</span>
-                            <span onClick={() => addEmoji('🥘')}>🥘</span>
-                            <span onClick={() => addEmoji('🫕')}>🫕</span>
-                            <span onClick={() => addEmoji('🥫')}>🥫</span>
-                            <span onClick={() => addEmoji('🍝')}>🍝</span>
-                            <span onClick={() => addEmoji('🍜')}>🍜</span>
-                            <span onClick={() => addEmoji('🍲')}>🍲</span>
-                            <span onClick={() => addEmoji('🍛')}>🍛</span>
-                            <span onClick={() => addEmoji('🍣')}>🍣</span>
-                            <span onClick={() => addEmoji('🍱')}>🍱</span>
-                            <span onClick={() => addEmoji('🥟')}>🥟</span>
-                            <span onClick={() => addEmoji('🦪')}>🦪</span>
-                            <span onClick={() => addEmoji('🍤')}>🍤</span>
-                            <span onClick={() => addEmoji('🍙')}>🍙</span>
-                            <span onClick={() => addEmoji('🍚')}>🍚</span>
-                            <span onClick={() => addEmoji('🍘')}>🍘</span>
-                            <span onClick={() => addEmoji('🍥')}>🍥</span>
-                            <span onClick={() => addEmoji('🥠')}>🥠</span>
-                            <span onClick={() => addEmoji('🥮')}>🥮</span>
-                            <span onClick={() => addEmoji('🍢')}>🍢</span>
-                            <span onClick={() => addEmoji('🍡')}>🍡</span>
-                            <span onClick={() => addEmoji('🍧')}>🍧</span>
-                            <span onClick={() => addEmoji('🍨')}>🍨</span>
-                            <span onClick={() => addEmoji('🍦')}>🍦</span>
-                            <span onClick={() => addEmoji('🥧')}>🥧</span>
-                            <span onClick={() => addEmoji('🧁')}>🧁</span>
-                            <span onClick={() => addEmoji('🍰')}>🍰</span>
-                            <span onClick={() => addEmoji('🎂')}>🎂</span>
-                            <span onClick={() => addEmoji('🍮')}>🍮</span>
-                            <span onClick={() => addEmoji('🍭')}>🍭</span>
-                            <span onClick={() => addEmoji('🍬')}>🍬</span>
-                            <span onClick={() => addEmoji('🍫')}>🍫</span>
-                            <span onClick={() => addEmoji('🍿')}>🍿</span>
-                            <span onClick={() => addEmoji('🍩')}>🍩</span>
-                            <span onClick={() => addEmoji('🍪')}>🍪</span>
-                            <span onClick={() => addEmoji('🌰')}>🌰</span>
-                            <span onClick={() => addEmoji('🥜')}>🥜</span>
-                            <span onClick={() => addEmoji('🍯')}>🍯</span>
-                            <span onClick={() => addEmoji('🥛')}>🥛</span>
-                            <span onClick={() => addEmoji('🍼')}>🍼</span>
-                            <span onClick={() => addEmoji('🫖')}>🫖</span>
-                            <span onClick={() => addEmoji('☕️')}>☕️</span>
-                            <span onClick={() => addEmoji('🍵')}>🍵</span>
-                            <span onClick={() => addEmoji('🧃')}>🧃</span>
-                            <span onClick={() => addEmoji('🥤')}>🥤</span>
-                            <span onClick={() => addEmoji('🧋')}>🧋</span>
-                            <span onClick={() => addEmoji('🫙')}>🫙</span>
-                            <span onClick={() => addEmoji('🍶')}>🍶</span>
-                            <span onClick={() => addEmoji('🍺')}>🍺</span>
-                            <span onClick={() => addEmoji('🍻')}>🍻</span>
-                            <span onClick={() => addEmoji('🥂')}>🥂</span>
-                            <span onClick={() => addEmoji('🍷')}>🍷</span>
-                            <span onClick={() => addEmoji('🫗')}>🫗</span>
-                            <span onClick={() => addEmoji('🥃')}>🥃</span>
-                            <span onClick={() => addEmoji('🍸')}>🍸</span>
-                            <span onClick={() => addEmoji('🍹')}>🍹</span>
-                            <span onClick={() => addEmoji('🧉')}>🧉</span>
-                            <span onClick={() => addEmoji('🍾')}>🍾</span>
-                            <span onClick={() => addEmoji('🧊')}>🧊</span>
-                            <span onClick={() => addEmoji('🥄')}>🥄</span>
-                            <span onClick={() => addEmoji('🍴')}>🍴</span>
-                            <span onClick={() => addEmoji('🍽')}>🍽</span>
-                            <span onClick={() => addEmoji('🥣')}>🥣</span>
-                            <span onClick={() => addEmoji('🥡')}>🥡</span>
-                            <span onClick={() => addEmoji('🥢')}>🥢</span>
-                            <span onClick={() => addEmoji('🧂')}>🧂</span>
-                            <span onClick={() => addEmoji('❤️')}>❤️</span>
-                            <span onClick={() => addEmoji('🩷')}>🩷</span>
-                            <span onClick={() => addEmoji('🧡')}>🧡</span>
-                            <span onClick={() => addEmoji('💛')}>💛</span>
-                            <span onClick={() => addEmoji('💚')}>💚</span>
-                            <span onClick={() => addEmoji('💙')}>💙</span>
-                            <span onClick={() => addEmoji('🩵')}>🩵</span>
-                            <span onClick={() => addEmoji('💜')}>💜</span>
-                            <span onClick={() => addEmoji('🖤')}>🖤</span>
-                            <span onClick={() => addEmoji('🩶')}>🩶</span>
-                            <span onClick={() => addEmoji('🤍')}>🤍</span>
-                            <span onClick={() => addEmoji('🤎')}>🤎</span>
-                            <span onClick={() => addEmoji('💔')}>💔</span>
-                            <span onClick={() => addEmoji('❣️')}>❣️</span>
-                            <span onClick={() => addEmoji('💕')}>💕</span>
-                            <span onClick={() => addEmoji('💞')}>💞</span>
-                            <span onClick={() => addEmoji('💓')}>💓</span>
-                            <span onClick={() => addEmoji('💗')}>💗</span>
-                            <span onClick={() => addEmoji('💖')}>💖</span>
-                            <span onClick={() => addEmoji('💘')}>💘</span>
-                            <span onClick={() => addEmoji('💝')}>💝</span>
-                            <span onClick={() => addEmoji('💟')}>💟</span>
-                            <span onClick={() => addEmoji('♠️')}>♠️</span>
-                            <span onClick={() => addEmoji('♣️')}>♣️</span>
-                            <span onClick={() => addEmoji('♥️')}>♥️</span>
-                            <span onClick={() => addEmoji('♦️')}>♦️</span>
-                            <span onClick={() => addEmoji('🕐')}>🕐</span>
-                            <span onClick={() => addEmoji('🕑')}>🕑</span>
-                            <span onClick={() => addEmoji('🕒')}>🕒</span>
-                            <span onClick={() => addEmoji('🕓')}>🕓</span>
-                            <span onClick={() => addEmoji('🕔')}>🕔</span>
-                            <span onClick={() => addEmoji('🕕')}>🕕</span>
-                            <span onClick={() => addEmoji('🕖')}>🕖</span>
-                            <span onClick={() => addEmoji('🕗')}>🕗</span>
-                            <span onClick={() => addEmoji('🕘')}>🕘</span>
-                            <span onClick={() => addEmoji('🕙')}>🕙</span>
-                            <span onClick={() => addEmoji('🕚')}>🕚</span>
-                            <span onClick={() => addEmoji('🕛')}>🕛</span>
-                            <span onClick={() => addEmoji('🕜')}>🕜</span>
-                            <span onClick={() => addEmoji('🕝')}>🕝</span>
-                            <span onClick={() => addEmoji('🕞')}>🕞</span>
-                            <span onClick={() => addEmoji('🕟')}>🕟</span>
-                            <span onClick={() => addEmoji('🕠')}>🕠</span>
-                            <span onClick={() => addEmoji('🕡')}>🕡</span>
-                            <span onClick={() => addEmoji('🕢')}>🕢</span>
-                            <span onClick={() => addEmoji('🕣')}>🕣</span>
-                            <span onClick={() => addEmoji('🕤')}>🕤</span>
-                            <span onClick={() => addEmoji('🕥')}>🕥</span>
-                            <span onClick={() => addEmoji('🕦')}>🕦</span>
-                            <span onClick={() => addEmoji('🕧')}>🕧</span>
-                            <span onClick={() => addEmoji('⚽️')}>⚽️</span>
-                            <span onClick={() => addEmoji('🏀')}>🏀</span>
-                            <span onClick={() => addEmoji('🏈')}>🏈</span>
-                            <span onClick={() => addEmoji('⚾️')}>⚾️</span>
-                            <span onClick={() => addEmoji('🥎')}>🥎</span>
-                            <span onClick={() => addEmoji('🎾')}>🎾</span>
-                            <span onClick={() => addEmoji('🏐')}>🏐</span>
-                            <span onClick={() => addEmoji('🏉')}>🏉</span>
-                            <span onClick={() => addEmoji('🥏')}>🥏</span>
-                            <span onClick={() => addEmoji('🎱')}>🎱</span>
-                            <span onClick={() => addEmoji('🪀')}>🪀</span>
-                            <span onClick={() => addEmoji('🏓')}>🏓</span>
-                            <span onClick={() => addEmoji('🏸')}>🏸</span>
-                            <span onClick={() => addEmoji('🏒')}>🏒</span>
-                            <span onClick={() => addEmoji('🏑')}>🏑</span>
-                            <span onClick={() => addEmoji('🥍')}>🥍</span>
-                            <span onClick={() => addEmoji('🏏')}>🏏</span>
-                            <span onClick={() => addEmoji('🪃')}>🪃</span>
-                            <span onClick={() => addEmoji('🥅')}>🥅</span>
-                            <span onClick={() => addEmoji('⛳️')}>⛳️</span>
-                            <span onClick={() => addEmoji('🪁')}>🪁</span>
-                            <span onClick={() => addEmoji('🏹')}>🏹</span>
-                            <span onClick={() => addEmoji('🎣')}>🎣</span>
-                            <span onClick={() => addEmoji('🤿')}>🤿</span>
-                            <span onClick={() => addEmoji('🥊')}>🥊</span>
-                            <span onClick={() => addEmoji('🥋')}>🥋</span>
-                            <span onClick={() => addEmoji('🎽')}>🎽</span>
-                            <span onClick={() => addEmoji('🛹')}>🛹</span>
-                            <span onClick={() => addEmoji('🛼')}>🛼</span>
-                            <span onClick={() => addEmoji('🛷')}>🛷</span>
-                            <span onClick={() => addEmoji('⛸')}>⛸</span>
-                            <span onClick={() => addEmoji('🥌')}>🥌</span>
-                            <span onClick={() => addEmoji('🎿')}>🎿</span>
-                            <span onClick={() => addEmoji('⛷')}>⛷</span>
-                            <span onClick={() => addEmoji('🏂')}>🏂</span>
-                            <span onClick={() => addEmoji('🪂')}>🪂</span>
-                            <span onClick={() => addEmoji('🏋️')}>🏋️</span>
-                            <span onClick={() => addEmoji('🤼')}>🤼</span>
-                            <span onClick={() => addEmoji('🤸')}>🤸</span>
-                            <span onClick={() => addEmoji('⛹️')}>⛹️</span>
-                            <span onClick={() => addEmoji('🤺')}>🤺</span>
-                            <span onClick={() => addEmoji('🤾')}>🤾</span>
-                            <span onClick={() => addEmoji('🏌️')}>🏌️</span>
-                            <span onClick={() => addEmoji('🏇')}>🏇</span>
-                            <span onClick={() => addEmoji('🧘')}>🧘</span>
-                            <span onClick={() => addEmoji('🏄')}>🏄</span>
-                            <span onClick={() => addEmoji('🏊')}>🏊</span>
-                            <span onClick={() => addEmoji('🤽')}>🤽</span>
-                            <span onClick={() => addEmoji('🚣')}>🚣</span>
-                            <span onClick={() => addEmoji('🧗')}>🧗</span>
-                            <span onClick={() => addEmoji('🚵')}>🚵</span>
-                            <span onClick={() => addEmoji('🚴')}>🚴</span>
-                            <span onClick={() => addEmoji('🏆')}>🏆</span>
-                            <span onClick={() => addEmoji('🥇')}>🥇</span>
-                            <span onClick={() => addEmoji('🥈')}>🥈</span>
-                            <span onClick={() => addEmoji('🥉')}>🥉</span>
-                            <span onClick={() => addEmoji('🏅')}>🏅</span>
-                            <span onClick={() => addEmoji('🎖')}>🎖</span>
-                            <span onClick={() => addEmoji('🏵')}>🏵</span>
-                            <span onClick={() => addEmoji('🎗')}>🎗</span>
-                            <span onClick={() => addEmoji('🎫')}>🎫</span>
-                            <span onClick={() => addEmoji('🎟')}>🎟</span>
-                            <span onClick={() => addEmoji('🎪')}>🎪</span>
-                            <span onClick={() => addEmoji('🤹')}>🤹</span>
-                            <span onClick={() => addEmoji('🎭')}>🎭</span>
-                            <span onClick={() => addEmoji('🩰')}>🩰</span>
-                            <span onClick={() => addEmoji('🎨')}>🎨</span>
-                            <span onClick={() => addEmoji('🎬')}>🎬</span>
-                            <span onClick={() => addEmoji('🎤')}>🎤</span>
-                            <span onClick={() => addEmoji('🎧')}>🎧</span>
-                            <span onClick={() => addEmoji('🎼')}>🎼</span>
-                            <span onClick={() => addEmoji('🎹')}>🎹</span>
-                            <span onClick={() => addEmoji('🥁')}>🥁</span>
-                            <span onClick={() => addEmoji('🪘')}>🪘</span>
-                            <span onClick={() => addEmoji('🪇')}>🪇</span>
-                            <span onClick={() => addEmoji('🎷')}>🎷</span>
-                            <span onClick={() => addEmoji('🎺')}>🎺</span>
-                            <span onClick={() => addEmoji('🪗')}>🪗</span>
-                            <span onClick={() => addEmoji('🎸')}>🎸</span>
-                            <span onClick={() => addEmoji('🪕')}>🪕</span>
-                            <span onClick={() => addEmoji('🎻')}>🎻</span>
-                            <span onClick={() => addEmoji('🪈')}>🪈</span>
-                            <span onClick={() => addEmoji('🎲')}>🎲</span>
-                            <span onClick={() => addEmoji('♟')}>♟</span>
-                            <span onClick={() => addEmoji('🎯')}>🎯</span>
-                            <span onClick={() => addEmoji('🎳')}>🎳</span>
-                            <span onClick={() => addEmoji('🎮')}>🎮</span>
-                            <span onClick={() => addEmoji('🎰')}>🎰</span>
-                            <span onClick={() => addEmoji('🧩')}>🧩</span>
-                            <span onClick={() => addEmoji('🔥')}>🔥</span>
-                            <span onClick={() => addEmoji('🎉')}>🎉</span>
-                            <span onClick={() => addEmoji('🚀')}>🚀</span>
-                            <span onClick={() => addEmoji('🌈')}>🌈</span>
-                            <span onClick={() => addEmoji('🌟')}>🌟</span>
                           </div>
                         )}
                       </Toolbar>
@@ -1908,8 +1744,8 @@ function App() {
                         ))}
                       </ul>
                     )}
-
                   </div>
+
 
                   {showModal && (
                     <div className="modal fade show d-block" tabIndex="-1" role="dialog">
@@ -1942,13 +1778,8 @@ function App() {
                       </div>
                     </div>
                   )}
-
-
-
-
                 </div>
                 {/* )} */}
-
 
               </div>
             </>
@@ -1960,6 +1791,5 @@ function App() {
     </>
   )
 }
-
 
 export default App 

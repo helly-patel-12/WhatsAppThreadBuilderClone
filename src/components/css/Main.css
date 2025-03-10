@@ -88,16 +88,12 @@
     cursor: pointer;
 }
 
-.message:hover {
-    background-color: #ffad9f;
-}
-
 .message-user {
     align-self: flex-end;
     background-color: #e7ffdb;
     color: #333;
     border-radius: 10px 0 10px 10px;
-    display: flex;
+    /* display: flex; */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -2px rgba(0, 0, 0, .1);
     position: relative;
 }
@@ -112,7 +108,7 @@
 
 .message-time {
     font-size: 0.6em;
-    color: #777; 
+    color: #777;
     display: block;
     bottom: 0;
     margin-top: auto;
@@ -421,20 +417,20 @@
     height: 20px;
     width: 40px;
     background-color: transparent;
-  }
+}
 
-  .close-btn:hover {
+.close-btn:hover {
     opacity: 1;
     font-size: 12px;
-  }
+}
 
-  .flow-list-header{
+.flow-list-header {
     position: relative;
     display: flex;
     justify-content: space-between;
-  }
+}
 
-  .tab-content {
+.tab-content {
     /* background-color: #ffffff; */
     /* box-shadow: #5a6268; */
     padding: 10px;
@@ -450,7 +446,7 @@
     right: 0;
 }
 
-.form-name-label{
+.form-name-label {
     margin-left: 10px;
 }
 
@@ -464,7 +460,7 @@
 }
 
 
-.flow-list-footer button{
+.flow-list-footer button {
     bottom: 0;
     width: 85%;
     background-color: #008069;
@@ -475,3 +471,89 @@
     margin: 5px;
 }
 
+.shop-btn a{
+    border: none;
+    margin: none;
+    color: #0d6efd;
+}
+
+.shop-btn:hover {
+    color: #000;
+}
+
+.shop-btn a:hover {
+    color: #000;
+}
+
+.popup-overlay {
+    background-color: #ffffff;
+    color: #000;
+    width: 370px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 10px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -2px rgba(0, 0, 0, .1);
+    /* text-align: left; */
+}
+
+.popup-box{
+    gap: 10px;
+    height: max-content;
+    justify-content: space-between;
+}
+
+.popup-content {
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 460px;
+    overflow: hidden;
+}
+
+.popup-label {
+    font-size: 1em;
+    margin-left: 10px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.popup-header{
+    margin-bottom: 20px;
+    height: 50px;
+}
+
+.popup-footer{
+    margin-top: 20px;
+    height: 50px;
+    margin: 30px 10px 10px;
+}
+
+.icon-r {
+    width: 30px;
+    color: #373737;
+
+}
+
+.icon-l {
+    width: 30px;
+    color: #373737;
+    rotate: 180deg;
+}
+
+.popup-btn{
+    display: flex;
+    width: max-content;
+    gap: 10px;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    position:static;
+}
