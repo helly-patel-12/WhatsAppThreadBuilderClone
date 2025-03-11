@@ -412,7 +412,7 @@
     left: 20px;
     bottom: 15px;
     border: none;
-    font-size: 10px;
+    font-size: 12px;
     cursor: pointer;
     height: 20px;
     width: 40px;
@@ -421,7 +421,7 @@
 
 .close-btn:hover {
     opacity: 1;
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .flow-list-header {
@@ -471,7 +471,7 @@
     margin: 5px;
 }
 
-.shop-btn a{
+.shop-btn a {
     border: none;
     margin: none;
     color: #0d6efd;
@@ -499,9 +499,9 @@
     /* text-align: left; */
 }
 
-.popup-box{
+.popup-box {
     gap: 10px;
-    height: max-content;
+    height: 610px;
     justify-content: space-between;
 }
 
@@ -509,10 +509,8 @@
     flex-direction: column;
     gap: 10px;
     text-align: left;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
-    height: 460px;
+    width: 350px;
+    height: 470px;
     overflow: hidden;
 }
 
@@ -523,12 +521,21 @@
     margin-bottom: 5px;
 }
 
-.popup-header{
+.popup-header {
     margin-bottom: 20px;
     height: 50px;
+    /* justify-content: space-between; */
+    text-align: center;
 }
 
-.popup-footer{
+.header {
+    width: 100%;
+    height: 40px;
+    margin: none;
+
+}
+
+.popup-footer {
     margin-top: 20px;
     height: 50px;
     margin: 30px 10px 10px;
@@ -536,7 +543,7 @@
 
 .icon-r {
     width: 30px;
-    color: #373737;
+    color: #fff;
 
 }
 
@@ -546,7 +553,8 @@
     rotate: 180deg;
 }
 
-.popup-btn{
+.popup-b-btn,
+.popup-c-btn {
     display: flex;
     width: max-content;
     gap: 10px;
@@ -555,5 +563,73 @@
     align-content: center;
     margin-left: auto;
     margin-right: auto;
-    position:static;
+    position: static;
+}
+
+.popup-c-btn {
+    background-color: #198754;
+}
+
+.phone-image {
+    height: 130px;
+    width: 110px;
+    margin-left: 105px;
+    margin-right: 105px;
+    cursor: pointer;
+}
+
+.phone-image:hover {
+    font-size: larger;
+}
+
+.details-popup {
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 500px;
+}
+
+.specs-container {
+    margin-left: 10px;
+}
+
+.redirect {
+    margin-left: 80px;
+    /* margin-right: 20px; */
+    width: max-content;
+    margin-top: 10px;
+}
+
+.cart-btn{
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+
+.che-btn{
+    height: 35px;
+    width: 25px;
+    color: #fff;
+    border-radius: 50px;
+    margin-left: 5px;
+    justify-content: center;
+}
+
+.che-btn a{
+    color: #000;
+    border: none;
+    margin: none;
+}
+
+.che-btn:hover{
+    color: #0d6efd;
+    border-color: #0d6efd;
 }
