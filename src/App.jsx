@@ -52,18 +52,21 @@ function App() {
   const [isRegister, setIsRegister] = useState(false);
   const [shopPhones, setShopPhones] = useState(false);
   const [shopModels, setShopModels] = useState(false);
+  const [shopMobile, setShopMobile] = useState(false);
   const [selectedGadget, setSelectedGadget] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
+  const [selectedMobile, setSelectedMobile] = useState('');
   const [replyMessage, setReplyMessage] = useState(null);
+  const [mobileDetails, setMobileDetails] = useState(null);
 
   const categories = ["Personalized Offer", "Register for an event", "Get feedback", "Complete Sign up", "Book an appointment", "Get a quote"];
   const ShopCategories = ["Electronics", "Books", "Fashion", "Home & Kitchen", "Sports & Fitness", "Toys & Games", "Kindle eBooks", "Grocery and more", "Beauty and Health Care", "Pets Care", "Car and Motorbike", "Others"];
   const ElectronicsGadgets = ["Phone", "Laptop", "SmartWatch", "Tablets", "Speakers", "Cameras", "Headphones", "Computer", "Printers", "Smart Home", "Power Banks", "Others"];
   const PhoneBrands = ["Apple", "Samsung", "OnePlus", "Google", "Redmi", "Oppo", "Vivo", "Realme", "Nokia", "Motorola", "iQOO", "Others"];
   const PhoneModels = {
-    Apple: ["iPhone 16 Plus", "iPhone 15 Pro", "iPhone 14 Max", "iPhone 13 Pro Max", "iPhone 12 Mini", "iPhone 16 e", "iPhone 15 Plus", "iPhone 14 Pro Max", "iPhone 13 Pro ", "iPhone 12", "iPhone 11 Pro Max", "iPhone X"],
-    Samsung: ["Galaxy S23", "Galaxy S22", "Galaxy S24", "Galaxy Z Fold6", "Galaxy Z Flip6", "Galaxy A54", "Galaxy M55", "Galaxy Note 22", "Galaxy S21", "Galaxy S20", "Galaxy S10", "Galaxy A32"],
+    Apple: ["iPhone 16 Plus", "iPhone 15 Pro", "iPhone 14 Plus", "iPhone 13 Pro Max", "iPhone 12 Pro Max", "iPhone 16 e", "iPhone 15 Plus", "iPhone 14 Pro Max", "iPhone 13 Pro ", "iPhone 12", "iPhone 11 Pro Max", "iPhone X"],
+    Samsung: ["Galaxy S25", "Galaxy S24", "Galaxy S23", "Galaxy S22", "Galaxy Z Fold6", "Galaxy Z Flip6", "Galaxy A54", "Galaxy M55", "Galaxy Note 22", "Galaxy S21", "Galaxy S20", "Galaxy A56"],
     OnePlus: ["OnePlus 11", "OnePlus 10 Pro", "OnePlus Nord CE4", "OnePlus 12R", "OnePlus 13R", "OnePlus 14R", "OnePlus CE4 Lite", "OnePlus 9", "OnePlus 8", "OnePlus 7", "OnePlus 6", "OnePlus 5"],
     Google: ["Pixel 8", "Pixel 7", "Pixel 6", "Pixel 5", "Pixel 4", "Pixel 3", "Pixel 2", "Pixel 1", "Pixel 9 Pro ", "Pixel 9 Pro XL", "Pixel 8 Pro", "Pixel 7a"],
     Redmi: ["Redmi Note 12", "Redmi 11", "Redmi 10", "Redmi 9", "Redmi 8", "Redmi 14 Pro", "Redmi 13C", "Redmi 12", "Redmi 11A", "Redmi 10A", "Redmi 9A", "Redmi 8A"],
@@ -75,7 +78,107 @@ function App() {
     iQOO: ["iQOO 9", "iQOO 8", "iQOO 7", "iQOO 6", "iQOO 5", "iQOO 4", "iQOO 3", "iQOO 2", "iQOO 1", "iQOO 10", "iQOO 11", "iQOO 12"],
     Others: ["Xiaomi", "Huawei", "Sony", "LG", "Asus", "Lenovo", "HTC", "ZTE", "Alcatel", "TCL", "BlackBerry", "Nubia"]
   };
-  
+  const phoneSpecifications = {
+    "iPhone 16 Plus": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹82,900", Camera: "48MP", Color: "Pink, Black, Ultramarine, Teal, White", Weight: "203g", Display: "OLED", OS: "iOS 18", ScreenSize: "6.7 inches", Image: "https://m.media-amazon.com/images/I/71oWrfCTiqL._SL1500_.jpg", AmazonLink: "https://www.amazon.in/iPhone-16-128-Plus-Ultrmarine/dp/B0DGJ65N7V/ref=sr_1_1_sspa?crid=1SAIAVC6471MD&dib=eyJ2IjoiMSJ9.rgU948Jdslyo0k8J1OOl1qIkFKJP2MPynUohmQ-CQhxNilO6GQveFCrF9C-e2OjVmLZxgpRiSPb562aP5MCoT32Kds4vtzIEGp330wRDc1Y2XDnNDuPu3v1c9EGO1inF3CQ8r_Fz53dt-zP7-n4cWNjssMkB8SZJf8EJVy3o8pyx5JAT0ssdi37D6FFA86D-c4dcl3JGQODAHIu_xm_MdzEEzrwyFjv2XQtbNpnYnv7fwCvVEP-Sc6Ts_izJxxxDn3r3lTmz_hNuc9VMqlq7s5wIdsnj-kNGAo_cxQoH_YI.4p7Qj99uT29ZepqLn7_gruC25qCoX_pI2O0iREO_-Qs&dib_tag=se&keywords=16%2Bplus&qid=1741676269&s=electronics&sprefix=16%2Bplu%2Celectronics%2C221&sr=1-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1"},
+    "iPhone 15 Pro": { RAM: "8 GB", ROM: "128GB, 256GB, 512GB, 1TB", Price: "₹1,29,900", Camera: "48MP", Color: "Silver, Graphite, Gold, Sierra Blue", Weight: "204g", Display: "OLED with ProMotion", OS: "iOS 17", ScreenSize: "6.1 inches", Image:"https://m.media-amazon.com/images/I/81SigpJN1KL._SL1500_.jpg", AmazonLink: "https://www.amazon.in/Apple-iPhone-15-Pro-512/dp/B0CHX45NRR/ref=sr_1_3?crid=3AFHT3TWDPTZ3&dib=eyJ2IjoiMSJ9.4v41TksJxQppEqNzsRFXfMkLqu3lARp6SBUEMQjGHQOmskKUK7V9snrFDKeqYtpFOyOWN6JgT03s0etkURpAz2bSMb6JsLijbAKMBNL8GMFth4fs7WFih427eakP7MzQIV6NK1IUdbshiT9X3rQcw9AkEJCpbs14ryjt5g27YtURLrdDqo-oUW6vpypwpuHoGi2X236ko_qzx9A8j9w_qZB2omZ6RALPQQhEr86vCi3wGGoiyDeKUY_Xx0pHI7IzlBryrEhJTOjK1-EVqLgjQ_CDGeBGq1ShYdKPyUJdI0hS2uISVTfPR3uQoaRWoOYMGLYsFUhcx-KSTPZvCGG8cravZFAMaSMjd9R289zQQ8c.jSV8Ag-R8mGhf_jpSfC1vh8Bnj0BN87HXohbftPiArE&dib_tag=se&keywords=15%2Bpro&qid=1741677682&s=electronics&sprefix=15%2Bpro%2Celectronics%2C209&sr=1-3&th=1" },
+    "iPhone 14 Plus": { RAM: "6 GB", ROM: "128GB, 256GB, 512GB", Price: " ₹61,900", Camera: "12MP", Color: "Blue, Midnight, Starlight, Product Red", Weight: "203g", Display: "OLED", OS: "iOS 16", ScreenSize: "6.7 inches", Image: "https://m.media-amazon.com/images/I/61B0+qQriPL._SL1500_.jpg", AmazonLink: "https://www.amazon.in/Apple-iPhone-Plus-128GB-Midnight/dp/B0BDJKL7KM/ref=sr_1_1?crid=W3E6J99M7PB0&dib=eyJ2IjoiMSJ9.FsA5t-KvgUSJl3kOVfjHkjyofzu8vlm97BZ02v0-SFmDvOVkYr-xpN-piC-UjaB88YhWB5_kWNa3BGUunurjUNz-5w1AagBdyPl1DDqc7IE4euM1zcUlfrzmNCw3A-uzHMSj7L60cQpWgAfTorxs49hm1V7CDDCHqvmzM8YHbuJ3xvMaVf-yl5fY_xN-2QeAkoZvWD6SCrj64LMcJL7KA1rmAF73l1Af0yy0E6TlDOk.5YWT9_vL4jk3Gm5j-3T5dGWNFQ4LKktTFw9lY_WozH0&dib_tag=se&keywords=14%2Bmax&nsdOptOutParam=true&qid=1741677915&sprefix=14%2Bmax%2Caps%2C226&sr=8-1&th=1" },
+    "iPhone 13 Pro Max": { RAM: "6 GB", ROM: "128GB, 256GB, 512GB, 1TB", Price: "₹1,17,899", Camera: "12MP", Color: "Graphite, Gold, Silver, Sierra Blue", Weight: "238g", Display: "OLED with ProMotion", OS: "iOS 15", ScreenSize: "6.7 inches", Image: "https://m.media-amazon.com/images/I/61IJBsHm97L._SL1500_.jpg", AmazonLink: "https://www.amazon.in/Apple-iPhone-Pro-Max-128GB/dp/B09G9HR5GX/ref=sr_1_2?crid=3RWB2L4ZLD2L&dib=eyJ2IjoiMSJ9.WUB-pi4CRwyWnOwbVrBK4gNUQK-sYyYEU1ZsWPki1YfGW1Gtg1Lz_weno1Cz5amIbqzc5yU0V25aSKzM-ZkHhkPkmtwwK60IZqDFBkj4j4S68MDSVPjktW05UuMRELnZpzNCEw52HCSGTDvUfFYMPGwSzuSxhFPtlLIxqtiZ_bnw6HHR7bURrAjehE3qdAveVrx_qQK0To4e35Oflt5OciGdgFUB5QaKSFTXR8nvjfY.XtX7qfAhNO51AwAj4HYaGZ4wrl4d0Efot84_5bhOxEE&dib_tag=se&keywords=13+pro+max&qid=1741678127&sprefix=13+pro+max%2Caps%2C219&sr=8-2"},
+    "iPhone 12 Pro Max": { RAM: "4 GB", ROM: "64GB, 128GB, 256GB", Price: "₹1,09,900", Camera: "12MP", Color: "Black, White, Green, Blue, Red", Weight: "133g", Display: "OLED", OS: "iOS 14", ScreenSize: "5.4 inches", Image: "", AmazonLink: ""},
+    "iPhone 16 e": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "12MP", Color: "Blue, Green, Purple, Red, White", Weight: "194g", Display: "OLED", OS: "iOS 18", ScreenSize: "6.1 inches", Image: "", AmazonLink: ""},
+    "iPhone 15 Plus": { RAM: "6 GB", ROM: "128GB, 256GB, 512GB", Price: "₹87,136", Camera: "12MP", Color: "Silver, Graphite, Gold, Sierra Blue", Weight: "204g", Display: "OLED with ProMotion", OS: "iOS 17", ScreenSize: "6.1 inches", Image: "", AmazonLink: ""},
+    "iPhone 14 Pro Max": { RAM: "6 GB", ROM: "128GB, 256GB, 512GB", Price: "₹95,850", Camera: "12MP", Color: "Graphite, Gold, Silver, Sierra Blue", Weight: "238g", Display: "OLED with ProMotion", OS: "iOS 16", ScreenSize: "6.7 inches", Image: "", AmazonLink: ""},
+    "iPhone 13 Pro": { RAM: "6 GB", ROM: "128GB, 256GB, 512GB", Price: "₹87,130", Camera: "12MP", Color: "Graphite, Gold, Silver, Sierra Blue", Weight: "204g", Display: "OLED with ProMotion", OS: "iOS 15", ScreenSize: "6.1 inches", Image: "", AmazonLink: ""},
+    "iPhone 12": { RAM: "4 GB", ROM: "64GB, 128GB, 256GB", Price: "₹69,690", Camera: "12MP", Color: "Black, White, Green, Blue, Red", Weight: "164g", Display: "OLED", OS: "iOS 14", ScreenSize: "6.1 inches", Image: "", AmazonLink: ""},
+    "iPhone 11 Pro Max": { RAM: "4 GB", ROM: "64GB, 256GB, 512GB", Price: "₹95,850", Camera: "12MP", Color: "Midnight Green, Space Gray, Silver, Gold", Weight: "226g", Display: "OLED", OS: "iOS 13", ScreenSize: "6.5 inches", Image: "", AmazonLink: ""},
+    "iPhone X": { RAM: "3 GB", ROM: "64GB, 256GB", Price: "₹87,130", Camera: "12MP", Color: "Space Gray, Silver", Weight: "174g", Display: "OLED", OS: "iOS 11", ScreenSize: "5.8 inches", Image: "", AmazonLink: ""},
+    "Galaxy S25": { RAM: "12 GB", ROM: "256GB, 512GB, 1TB", Price: "₹80,999", Camera: "50MP", Color: "Phantom Black, Phantom Silver, Phantom Green, Phantom Pink", Weight: "228g", Display: "Dynamic AMOLED 2X", OS: "Android 14 with One UI 6", ScreenSize: "6.8 inches", Image: "https://m.media-amazon.com/images/I/61w7JQ+BFOL._SL1500_.jpg", AmazonLink: "https://www.amazon.in/gp/product/B0DSKNQ4YR/ref=ox_sc_act_image_1?smid=AJ6SIZC8YQDZX&th=1" },
+    "Galaxy S24": { RAM: "12 GB", ROM: "256GB, 512GB", Price: "₹104,565", Camera: "108MP", Color: "Phantom Black, Phantom Silver, Phantom Green", Weight: "228g", Display: "Dynamic AMOLED 2X", OS: "Android 13 with One UI 5", ScreenSize: "6.8 inches", },
+    "Galaxy S23": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Phantom Black, Phantom Cream, Phantom Green, Phantom Lavender", Weight: "168g", Display: "Dynamic AMOLED 2X", OS: "Android 12 with One UI 4", ScreenSize: "6.1 inches", },
+    "Galaxy S22": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Phantom Black, Phantom White, Green, Pink Gold", Weight: "167g", Display: "Dynamic AMOLED 2X", OS: "Android 12 with One UI 4", ScreenSize: "6.1 inches", },
+    "Galaxy Z Fold 6": { RAM: "12 GB", ROM: "256GB, 512GB, 1TB", Price: "₹156,890", Camera: "50MP", Color: "Phantom Black, Phantom Silver, Phantom Green", Weight: "271g", Display: "Foldable Dynamic AMOLED 2X", OS: "Android 14 with One UI 6", ScreenSize: "7.6 inches (unfolded)", },
+    "Galaxy Z Flip 6": { RAM: "8 GB", ROM: "128GB, 256GB, 512GB", Price: "₹87,130", Camera: "12MP", Color: "Phantom Black, Phantom Cream, Phantom Lavender, Phantom Green", Weight: "183g", Display: "Foldable Dynamic AMOLED 2X", OS: "Android 14 with One UI 6", ScreenSize: "6.7 inches (unfolded)" },
+    "Galaxy A54": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "Android 12 with One UI 4", ScreenSize: "6.7 inches", },
+    "Galaxy M55": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "108MP", Color: "Black, Blue, White, Green", Weight: "203g", Display: "Super AMOLED", OS: "Android 12 with One UI 4", ScreenSize: "6.8 inches", },
+    "Galaxy Note 22": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹87,130", Camera: "108MP", Color: "Phantom Black, Phantom Silver, Phantom Green", Weight: "213g", Display: "Dynamic AMOLED 2X", OS: "Android 13 with One UI 5", ScreenSize: "6.8 inches", },
+    "Galaxy S21": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "108MP", Color: "Phantom Black, Phantom Silver, Phantom Green", Weight: "200g", Display: "Dynamic AMOLED 2X", OS: "Android 11 with One UI 3", ScreenSize: "6.2 inches", },
+    "Galaxy S20": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹87,130", Camera: "64MP", Color: "Cosmic Gray, Cloud Blue, Cloud Pink", Weight: "163g", Display: "Dynamic AMOLED 2X", OS: "Android 10 with One UI 2", ScreenSize: "6.2 inches", },
+    "Galaxy A56": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "Android 12 with One UI 4", ScreenSize: "6.7 inches", },
+    "OnePlus 11": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "OxygenOS 13", ScreenSize: "6.1 inches", },
+    "OnePlus 10 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "OxygenOS 12", ScreenSize: "6.1 inches", },
+    "OnePlus Nord CE4": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "OxygenOS 11", ScreenSize: "6.4 inches", },
+    "OnePlus 12R": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "OxygenOS 14", ScreenSize: "6.1 inches", },
+    "OnePlus 13R": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹78,400", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "OxygenOS 15", ScreenSize: "6.7 inches", },
+    "OnePlus 14R": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹87,130", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "OxygenOS 16", ScreenSize: "6.7 inches", },
+    "OnePlus CE4 Lite": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "OxygenOS 11", ScreenSize: "6.4 inches", },
+    "OnePlus 9": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "183g", Display: "AMOLED", OS: "OxygenOS 12", ScreenSize: "6.5 inches", },
+    "OnePlus 8": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "48MP", Color: "Black, Green, Blue", Weight: "180g", Display: "AMOLED", OS: "OxygenOS 11", ScreenSize: "6.55 inches", },
+    "OnePlus 7": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹52,242", Camera: "48MP", Color: "Mirror Gray, Red, Blue", Weight: "182g", Display: "AMOLED", OS: "OxygenOS 10", ScreenSize: "6.41 inches", },
+    "OnePlus 6": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹46,140", Camera: "16MP", Color: "Mirror Black, Midnight Black, Silk White", Weight: "177g", Display: "AMOLED", OS: "OxygenOS 9", ScreenSize: "6.28 inches", },
+    "OnePlus 5": { RAM: "8 GB", ROM: "128GB", Price: "₹41,760", Camera: "16MP", Color: "Midnight Black, Slate Gray", Weight: "153g", Display: "AMOLED", OS: "OxygenOS 8", ScreenSize: "5.5 inches", },
+    "Pixel 8": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 14", ScreenSize: "6.1 inches", },
+    "Pixel 7": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 13", ScreenSize: "6.1 inches", },
+    "Pixel 6": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹52,242", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 12", ScreenSize: "6.1 inches", },
+    "Pixel 5": { RAM: "8 GB", ROM: "128GB", Price: "₹43,515", Camera: "48MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 11", ScreenSize: "6.0 inches", },
+    "Pixel 4": { RAM: "6 GB", ROM: "64GB, 128GB", Price: "₹69,690", Camera: "16MP", Color: "Black, White, Orange", Weight: "193g", Display: "OLED", OS: "Android 10", ScreenSize: "5.7 inches", },
+    "Pixel 3": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹69,690", Camera: "12.2MP", Color: "Black, White, Pink", Weight: "148g", Display: "OLED", OS: "Android 9", ScreenSize: "5.5 inches", },
+    "Pixel 2": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹56,580", Camera: "12.2MP", Color: "Black, White, Blue", Weight: "143g", Display: "OLED", OS: "Android 8", ScreenSize: "5.0 inches", },
+    "Pixel 1": { RAM: "4 GB", ROM: "32GB, 128GB", Price: "₹56,580", Camera: "12.3MP", Color: "Black, White, Blue", Weight: "143g", Display: "AMOLED", OS: "Android 7", ScreenSize: "5.0 inches", },
+    "Pixel 9 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹78,400", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 15", ScreenSize: "6.1 inches", },
+    "Pixel 9 Pro XL": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹87,130", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 15", ScreenSize: "6.7 inches", },
+    "Pixel 8 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹69,690", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 14", ScreenSize: "6.1 inches", },
+    "Pixel 7a": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "48MP", Color: "Black, White, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "Android 13", ScreenSize: "6.4 inches", },
+    "Redmi Note 12": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 14", ScreenSize: "6.7 inches", },
+    "Redmi 11": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 13", ScreenSize: "6.5 inches", },
+    "Redmi 10": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹12,990", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 12", ScreenSize: "6.5 inches", },
+    "Redmi 9": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹11,245", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 11", ScreenSize: "6.5 inches", },
+    "Redmi 8": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹8,630", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 10", ScreenSize: "6.5 inches", },
+    "Redmi 14 Pro": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹21,710", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 14", ScreenSize: "6.7 inches", },
+    "Redmi 13C": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 13", ScreenSize: "6.5 inches", },
+    "Redmi 12": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹12,990", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 12", ScreenSize: "6.5 inches", },
+    "Redmi 11A": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹8,630", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 11", ScreenSize: "6.5 inches", },
+    "Redmi 10A": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹6,887", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 10", ScreenSize: "6.5 inches", },
+    "Redmi 9A": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹6,015", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 9", ScreenSize: "6.5 inches", },
+    "Redmi 8A": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹4,272", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "MIUI 8", ScreenSize: "6.5 inches", },
+    "Oppo Reno 7": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "ColorOS 13", ScreenSize: "6.1 inches", },
+    "Oppo F21": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "ColorOS 12", ScreenSize: "6.4 inches", },
+    "Oppo A95": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "ColorOS 11", ScreenSize: "6.7 inches", },
+    "Oppo A74": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 10", ScreenSize: "6.5 inches", },
+    "Oppo A53": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 9", ScreenSize: "6.5 inches", },
+    "Oppo A32": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹12,990", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 8", ScreenSize: "6.5 inches", },
+    "Oppo A21": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹8,630", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 7", ScreenSize: "6.5 inches", },
+    "Oppo A11": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹6,887", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 6", ScreenSize: "6.5 inches", },
+    "Oppo A10": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹4,272", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 5", ScreenSize: "6.5 inches", },
+    "Oppo A9": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹2,530", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 4", ScreenSize: "6.5 inches", },
+    "Oppo A8": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹1,656", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "ColorOS 3", ScreenSize: "6.5 inches", },
+    "Vivo X80": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Funtouch OS 13", ScreenSize: "6.1 inches", },
+    "Vivo Y76": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "Funtouch OS 12", ScreenSize: "6.4 inches", },
+    "Vivo V21": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "Funtouch OS 11", ScreenSize: "6.7 inches", },
+    "Vivo V23": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 10", ScreenSize: "6.5 inches", },
+    "Vivo Y200": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 9", ScreenSize: "6.5 inches", },
+    "Vivo Y29": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹12,990", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 8", ScreenSize: "6.5 inches", },
+    "Vivo Y33": { RAM: "4 GB", ROM: "64GB, 128GB", Price: "₹11,245", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 7", ScreenSize: "6.5 inches", },
+    "Vivo Y37": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹8,630", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 6", ScreenSize: "6.5 inches", },
+    "Vivo Y41": { RAM: "3 GB", ROM: "32GB, 64GB", Price: "₹6,887", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 5", ScreenSize: "6.5 inches", },
+    "Vivo Y45": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹4,272", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 4", ScreenSize: "6.5 inches", },
+    "Vivo Y49": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹2,530", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 3", ScreenSize: "6.5 inches", },
+    "Vivo Y53": { RAM: "2 GB", ROM: "16GB, 32GB", Price: "₹1,656", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Funtouch OS 2", ScreenSize: "6.5 inches", },
+    "Realme 10 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "Realme UI 3", ScreenSize: "6.7 inches", },
+    "Realme 9 Pro": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Realme UI 2", ScreenSize: "6.5 inches", },
+    "Realme 8 Pro": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹21,710", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Realme UI 1", ScreenSize: "6.5 inches", },
+    "Realme 7 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "182g", Display: "Super AMOLED", OS: "Realme UI 2", ScreenSize: "6.4 inches", },
+    "Realme 6 Pro": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹21,710", Camera: "64MP", Color: "Blue, Black, Green, Pink", Weight: "202g", Display: "IPS LCD", OS: "Realme UI 1", ScreenSize: "6.6 inches", },
+    "Realme 5 Pro": { RAM: "8 GB", ROM: "128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "184g", Display: "IPS LCD", OS: "Realme UI", ScreenSize: "6.3 inches", },
+    "Realme 10": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹34,797", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "189g", Display: "Super AMOLED", OS: "Realme UI 3", ScreenSize: "6.7 inches", },
+    "Realme 9": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Realme UI 2", ScreenSize: "6.5 inches", },
+    "Realme 8": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹21,710", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "200g", Display: "IPS LCD", OS: "Realme UI 1", ScreenSize: "6.5 inches", },
+    "Realme 7": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹26,067", Camera: "64MP", Color: "Black, Blue, White, Green", Weight: "182g", Display: "Super AMOLED", OS: "Realme UI 2", ScreenSize: "6.4 inches", },
+    "Realme 6": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹21,710", Camera: "64MP", Color: "Blue, Black, Green, Pink", Weight: "202g", Display: "IPS LCD", OS: "Realme UI 1", ScreenSize: "6.6 inches", },
+    "Realme 5": { RAM: "8 GB", ROM: "128GB", Price: "₹17,350", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "184g", Display: "IPS LCD", OS: "Realme UI", ScreenSize: "6.3 inches", },
+    "Nokia 9": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹60,960", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 13", ScreenSize: "6.1 inches", },
+    "Nokia 8": { RAM: "8 GB", ROM: "128GB, 256GB", Price: "₹52,242", Camera: "50MP", Color: "Black, White, Green, Pink", Weight: "183g", Display: "OLED", OS: "Android 12", ScreenSize: "6.1 inches", },
+    "Nokia 7": { RAM: "6 GB", ROM: "128GB, 256GB", Price: "₹43,515", Camera: "48MP", Color: "Blue, Black, Green, Pink", Weight: "170g", Display: "AMOLED", OS: "Android 11", ScreenSize: "6.4 inches", },
+
+ };
 
 
   // const [value, setValue] = useState('simple text');
@@ -782,14 +885,46 @@ function App() {
     setShopModels(false);
   };
 
-  
+  const handleMobileContinue = () => {
+    setSelectedMobile === selectedModel;
+    if (selectedModel) {
+      if (window.confirm('Are you sure you want to add this item to your cart?')) {
+        const message = `You have selected ${selectedModel} from ${selectedBrand} Brand at the ${selectedGadget} category of ${selectedShopCategory}.`;
+        setReplyMessage({ sender: 'message-company', message, description: 'Your order has been placed in cart Successfully' });
+        setShopMobile(false);
+        setShowIntro(true);
+        alert('Your order has been placed in cart Successfully');
+      }
+    } else if (selectedModel) {
+      alert("This model is out of stock...");
+    } else {
+      alert("Please select a phone model to show its details.");
+    }
+  }
+
+  const handleMobileBack = () => {
+    setShopModels(true);
+    setShopMobile(false);
+  };
+
+  useEffect(() => {
+    if (selectedModel && phoneSpecifications[selectedModel]) {
+      setMobileDetails(phoneSpecifications[selectedModel]);
+    }
+  }, [selectedModel]);
+
 
   const handleClose = () => {
-    setIsRegister(false);
-    setShopElectronics(false);
-    setShopPhones(false);
-    setShopModels(false);
-    setShowIntro(true);
+    if (window.confirm('Are you sure you want to close?')) {
+      setIsRegister(false);
+      setShopElectronics(false);
+      setShopPhones(false);
+      setShopModels(false);
+      setShopMobile(false);
+      setShowIntro(true);
+    } else {
+      return;
+    }
   };
 
   // const handleShopMess = () => {
@@ -1169,7 +1304,7 @@ function App() {
 
                       <div className="msg-content" hidden={shopMessage}>
                         <div>
-                          <div className="chat-content" id="chat-content" hidden={isRegister || shopElectronics || shopPhones || shopModels}>
+                          <div className="chat-content" id="chat-content" hidden={isRegister || shopElectronics || shopPhones || shopModels || shopMobile}>
                             {messages.map((msg, index) => {
                               const messageClass = povType === 'customer' ? msg.sender === 'user' ? 'message message-user' : 'message message-company' : msg.sender === 'user' ? 'message message-company' : 'message message-user';
                               return (
@@ -1223,13 +1358,14 @@ function App() {
                                 <div key={idx} className={` flow-content-msg ${messageClass} `}>
                                   <p>{replyMessage.message}</p>
                                   <h6>{replyMessage.description}</h6>
+                                  <button className='btn btn-warning che-btn'>
+                                    <a href={mobileDetails.AmazonLink} target="_blank" rel="noreferrer">
+                                      Proceed to Buy
+                                    </a>
+                                  </button>
                                 </div>
                               )
                             })}
-                          </div>
-
-                          <div className="flow-messages mt-3" hidden={isRegister || shopElectronics || shopPhones || shopModels}>
-
                           </div>
                         </div>
 
@@ -1250,11 +1386,11 @@ function App() {
                                 ))}
                               </div>
                               <div className='d-flex popup-footer'>
-                                <button className='btn btn-primary popup-btn' onClick={handleBack}>
+                                <button className='btn btn-primary popup-b-btn' onClick={handleBack}>
                                   <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                   Back
                                 </button>
-                                <button className='btn btn-primary popup-btn' onClick={handleContinue}>
+                                <button className='btn btn-success popup-c-btn' onClick={handleContinue}>
                                   Continue
                                   <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                 </button>
@@ -1280,11 +1416,11 @@ function App() {
                                 ))}
                               </div>
                               <div className='d-flex popup-footer'>
-                                <button className='btn btn-primary popup-btn' onClick={handleElectronicsBack}>
+                                <button className='btn btn-primary popup-b-btn' onClick={handleElectronicsBack}>
                                   <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                   Back
                                 </button>
-                                <button className='btn btn-primary popup-btn' onClick={handleElectronicsContinue}>
+                                <button className='btn btn-success popup-c-btn' onClick={handleElectronicsContinue}>
                                   Continue
                                   <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                 </button>
@@ -1310,11 +1446,11 @@ function App() {
                                 ))}
                               </div>
                               <div className='d-flex popup-footer'>
-                                <button className='btn btn-primary popup-btn' onClick={handlePhoneBack}>
+                                <button className='btn btn-primary popup-b-btn' onClick={handlePhoneBack}>
                                   <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                   Back
                                 </button>
-                                <button className='btn btn-primary popup-btn' onClick={handlePhoneContinue}>
+                                <button className='btn btn-success popup-c-btn' onClick={handlePhoneContinue}>
                                   Continue
                                   <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                 </button>
@@ -1340,11 +1476,11 @@ function App() {
                                 ))}
                               </div>
                               <div className='d-flex popup-footer'>
-                                <button className='btn btn-primary popup-btn' onClick={handleModelBack}>
+                                <button className='btn btn-primary popup-b-btn' onClick={handleModelBack}>
                                   <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                   Back
                                 </button>
-                                <button className='btn btn-primary popup-btn' onClick={handleModelContinue}>
+                                <button className='btn btn-success popup-c-btn' onClick={handleModelContinue}>
                                   Continue
                                   <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
                                 </button>
@@ -1353,9 +1489,57 @@ function App() {
                           </div>
                         )}
 
-                        {/* Fifth Popup: Phone Models */}
+                        {/* Fifth Popup: Mobile Details */}
+                        {shopMobile && (
+                          <div className="popup-overlay">
+                            <div className="popup-box">
+                              <div className="d-flex popup-header">
+                                <button className="close-btn" onClick={handleClose}>X</button>
+                                <h4 className='header'>You Selected <br /> <strong> <em> {selectedModel} </em> </strong> </h4>
+                                <button className="close-btn" >
+                                  {/* <span className="sr-only"></span> */}
+                                  <img src="https://static.vecteezy.com/system/resources/previews/026/327/358/original/more-icon-symbol-design-illustration-vector.jpg" alt="" />
+                                </button>
+                              </div>
+                              <div className='popup-content d-flex'>
+                                {mobileDetails && (
+                                  <div className="details-popup">
+                                    <a href={mobileDetails.Image} target="_blank" rel="noopener noreferrer">
+                                      <img src={mobileDetails.Image} alt={selectedModel} className="phone-image" />
+                                    </a>
+                                    <h5>Phone Specifications</h5>
+                                    <div className="specs-container">
+                                      {Object.entries(mobileDetails).map(([key, value]) => (
+                                        key !== "Image" && key !== "AmazonLink" && (
+                                          <div key={key} className="spec-item">
+                                            <span className="spec-key">{key}:</span> <span className="spec-value">{value}</span>
+                                          </div>
+                                        )
+                                      ))}
+                                    </div>
+                                    <a href={mobileDetails.AmazonLink} target="_blank" rel="noopener noreferrer" className="btn btn-info redirect">
+                                      Buy on Amazon
+                                      <img className='cart-btn' src="https://th.bing.com/th?id=OIP.BEUTMsqITs1iT6S9QzThYAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" />
+                                    </a>
+                                  </div>
+                                )}
+                              </div>
+                              <div className='d-flex popup-footer'>
+                                <button className='btn btn-primary popup-b-btn' onClick={handleMobileBack}>
+                                  <img className='icon-l' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                  Back
+                                </button>
+                                <button className='btn btn-success popup-c-btn' onClick={handleMobileContinue}>
+                                  Continue
+                                  <img className='icon-r' src="https://th.bing.com/th/id/R.eeaf6a8deb18f665bbcba072081beeeb?rik=QpUNnsmzWzRdIA&riu=http%3a%2f%2fwww.clipartbest.com%2fcliparts%2fxTg%2f6jb%2fxTg6jb6Bc.png&ehk=czCIACbu1xYU2OS7AeXQiczSlwix79KGQ3MyPK2ILUU%3d&risl=&pid=ImgRaw&r=0" alt="" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                       </div>
-                      {/* <div className="flow-shop-message" id='flow-shop-message' hidden={!shopMessage} >
+                      {/* <div className="flow-shop-message" id='flaow-shop-message' hidden={!shopMessage} >
                         <div className="flow-shop-list" >
                           <div className="flow-list-header">
                             <button className="close-btn" > 
