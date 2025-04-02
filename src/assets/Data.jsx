@@ -108,6 +108,187 @@ function App() {
                 </div>
             </section>
 
+
+            {/* <div className="flow-shop-message" id='flaow-shop-message' hidden={!shopMessage} >
+                        <div className="flow-shop-list" >
+                          <div className="flow-list-header">
+                            <button className="close-btn" > 
+                              <span className="sr-only"></span>
+                              <svg viewBox="0 0 24 24" className=" h-6 w-6">
+                                <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" fill="#000"></path>
+                              </svg>
+                            </button>
+                            <p className=""> <strong> Black Friday DEALS </strong></p>
+                            <button className="close-btn" > 
+                              <span className="sr-only"></span>
+                              <img src="https://static.vecteezy.com/system/resources/previews/026/327/358/original/more-icon-symbol-design-illustration-vector.jpg" alt="" />
+                            </button>
+                          </div>
+                          <div className="flow-list-data" >
+                            <p className=''>What would you like to buy?</p>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" onChange={handleCategoryChange} name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
+                              <label className="form-name-label" htmlFor="flexRadioDefault1" >
+                                Electronics
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault2">
+                                Fashion
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault3">
+                                Toys & Games
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault4">
+                                Fresh Food & Groceries
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault6" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault6">
+                                Books
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault8" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault8">
+                                Home & Kitchen Appliances
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault9" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault9">
+                                Car & Motorbike
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault10" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault10">
+                                Today's Deals
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault11" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault11">
+                                Sports, Fitness & Outdoors
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault12" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault12">
+                                Beauty & Personal Care
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault13" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault13">
+                                Pet Supplies
+                              </label>
+                            </div>
+                            <div className="tab-content">
+                              <input className="form-name-input" type="radio" name="flexRadioDefault" id="flexRadioDefault14" />
+                              <label className="form-name-label" htmlFor="flexRadioDefault14">
+                                Baby Products
+                              </label>
+                            </div>
+                            {!selectedElecCategory === "electronics" && (
+                              <div className="sub-category">
+                                <p>Choose a product:</p>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="laptops"
+                                  />
+                                  <label className="form-name-label" htmlFor="laptops">
+                                    Laptops
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="smartwatch"
+                                  />
+                                  <label className="form-name-label" htmlFor="smartwatch">
+                                    Smartwatches
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="phones"
+                                  />
+                                  <label className="form-name-label" htmlFor="phones">
+                                    Phones
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="tv"
+                                  />
+                                  <label className="form-name-label" htmlFor="tv">
+                                    TVs
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="speakers"
+                                  />
+                                  <label className="form-name-label" htmlFor="speakers">
+                                    Speakers
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="cameras"
+                                  />
+                                  <label className="form-name-label" htmlFor="cameras">
+                                    Cameras
+                                  </label>
+                                </div>
+                                <div className="tab-content">
+                                  <input
+                                    className="form-name-input"
+                                    type="radio"
+                                    name="electronics"
+                                    id="accessories"
+                                  />
+                                  <label className="form-name-label" htmlFor="accessories">
+                                    Computer Accessories
+                                  </label>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flow-list-footer">
+                            <button className="btn btn-outline-success"> Continue</button>
+                          </div>
+                        </div>
+                      </div> */}
+
+
+
         </>
     )
 }
