@@ -1,278 +1,229 @@
-.phone-container {
-    background-color: #fff;
-    border-radius: 20px;
-    width: 380px;
-    height: 280px;
-    padding: 20px;
-    margin-bottom: 20px;
-    /* margin-left: 10px; */
+/* ============================================================
+   Phone.css  —  PhoneSettings & ProfileSettings panels
+   ============================================================ */
+
+/* ── Panel cards ─────────────────────────────────────────── */
+/* ── Panel content wrappers ─────────────────────────────────── */
+.phone-settings-content,
+.profile-settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
 }
 
-.profile-container {
-    background-color: #fff;
-    border-radius: 20px;
-    width: 380px;
-    height: 280px;
-    padding: 20px;
-    margin-bottom: 20px;
-    /* margin-left: 10px; */
-}
 
-button {
-    width: 20px;
-}
-
-.top-container {
-    justify-content: space-between;
-}
-
-a {
-    display: inline-flex;
-    justify-content: space-between;
-}
-
-.active-href {
-    color: #25d366;
-    font-size: 1.2em;
-    cursor: pointer;
-}
-
-.active-href:hover {
-    color: #25d366;
-    font-size: 1.2em;
-}
-
-.deactive-href {
-    color: #646363;
-    text-align: left;
-    font-size: 1.2em;
-}
-
-.deactive-href:hover {
-    color: #646363;
-    text-align: left;
-    font-size: 1.2em;
-}
-
+/* ── Time row ────────────────────────────────────────────── */
 .time-container {
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
-.Time {
-    width: 80px;
-    height: 40px;
-    text-align: center;
-    padding: 5px;
+.text-time-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.form-check-input {
-    transform: scale(1.5);
-    background-color: #25d366;
-}
-
-.form-check-label {
-    font-size: 1rem;
-    margin-left: 5px;
-}
-
-.form-switch {
-    margin-left: 20px;
-}
-
-.btn-secondary {
-    height: 40px;
-    margin: none;
-}
-
+/* ── POV radio row ───────────────────────────────────────── */
 .pov-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
 }
 
-.form-check-input {
-    transition: background-color 0.3s ease;
-}
-
-.form-check-input:checked {
-    background-color: #25d366;
-    border-color: #25d366;
-}
-
-.form-check-input:hover {
-    background-color: #25d366;
-}
-
-.form-check-label {
-    color: #333;
-}
-
-.form-control {
-    margin-top: 5px;
-    height: 38px;
-    padding: 0%;
-    text-align: center;
-    font-size: large;
-    width: 10px;
-}
-
+/* ── Platform + frame row ────────────────────────────────── */
 .phone-type-container {
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+/* ── Read receipt row ────────────────────────────────────── */
+.user-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
 .read-msg {
-    text-align: left;
-    color: #646363;
-    margin-top: 10px;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-3);
+  font-size: var(--font-size-sm);
 }
 
-.user-message {
-    justify-content: space-between;
-    align-items: center;
-    display: flex;
-    cursor: pointer;
+.read-msg p {
+  margin: 0;
+}
+
+/* ── Profile section ─────────────────────────────────────── */
+.profile-section {
+  margin-bottom: var(--space-4);
+}
+
+.profile-section-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 
-.text-time-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ── Profile name input ──────────────────────────────────── */
+.profile-name-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+  outline: none;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
-.time-group {
-    display: flex;
-    align-items: center;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    padding: 5px 10px;
+.profile-name-input:focus {
+  border-color: var(--color-whatsapp);
+  box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.15);
 }
 
-.msg-time {
-    width: 120px;
-    padding: 8px;
-    font-size: medium;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s ease;
+/* ── Avatar uploader ─────────────────────────────────────── */
+.avatar-uploader {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
 }
 
-.msg-time:focus {
-    border-color: #5a6268;
+/* Circular button = the clickable avatar */
+.avatar-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-border-input);
+  background-color: var(--color-bg-light);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-base),
+    transform var(--transition-fast);
+  position: relative;
 }
 
-.msg-period {
-    padding: 8px;
-    width: 80px;
-    font-size: medium;
-    border-radius: 5px;
-    background-color: #6c757d;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.avatar-btn:hover {
+  border-color: var(--color-whatsapp);
+  transform: scale(1.05);
 }
 
-.msg-period:hover {
-    background-color: #5a6268;
+/* Solid border once an image is set */
+.avatar-btn:has(img) {
+  border-style: solid;
+  border-color: var(--color-whatsapp);
 }
 
-.tip {
-    position: relative;
-    display: inline-block;
+/* Uploaded image fills the circle */
+.avatar-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.tip .tiptext {
-    visibility: hidden;
-    width: max-content;
-    background-color: #646363;
-    color: #fff;
-    text-align: left;
-    border-radius: 6px;
-    padding: 10px 10px;
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    margin-left: -160px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 1s;
+/* Placeholder wrapper shown when no image */
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
-.tip:hover .tiptext {
-    visibility: visible;
-    opacity: 1;
+/* Camera badge shown on hover over the avatar button */
+.avatar-camera-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-whatsapp);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
 }
 
-.phone-frame-visible {
-    border: 5px solid #000;
-    border-radius: 20px;
-    /* padding: 2px;  */
+.avatar-btn:hover .avatar-camera-badge {
+  opacity: 1;
 }
 
-.handlePhone {
-    cursor: pointer;
+/* Remove (×) button — appears top-right of the uploader wrapper */
+.avatar-remove-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  color: #fff;
+  border: none;
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0.85;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 
-.outer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 6px;
-    padding-top: 2px;
-    margin-bottom: 10px;
-    padding-bottom: 2px;
+.avatar-remove-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
 }
 
-.pic-input {
-    display: flex;
-    gap: 0.75rem;
+/* ── Initials fallback (shown in ChatHeader when no image) ── */
+.avatar-initials {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #6b7280;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  user-select: none;
 }
-
-.pic {
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    padding: 2px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-/* .sr-only{
-    display: none;
-    border-radius: 50%;
-} */
-
-.image-upload-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .image-container {
-    position: relative;
-  }
-
-.uploaded-image{
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-}
-
-.btn-close {
-    position: absolute;
-    left: 20px;
-    bottom: 15px;
-    border: none;
-    font-size: 10px;
-    cursor: pointer;
-    color: #cb6767;
-    opacity: 0.7;
-  }
-
-  .btn-close:hover {
-    opacity: 1;
-
-  }
