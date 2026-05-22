@@ -1,0 +1,229 @@
+/* ============================================================
+   Phone.css  —  PhoneSettings & ProfileSettings panels
+   ============================================================ */
+
+/* ── Panel cards ─────────────────────────────────────────── */
+/* ── Panel content wrappers ─────────────────────────────────── */
+.phone-settings-content,
+.profile-settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+
+/* ── Time row ────────────────────────────────────────────── */
+.time-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.text-time-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ── POV radio row ───────────────────────────────────────── */
+.pov-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+/* ── Platform + frame row ────────────────────────────────── */
+.phone-type-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+/* ── Read receipt row ────────────────────────────────────── */
+.user-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.read-msg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.read-msg p {
+  margin: 0;
+}
+
+/* ── Profile section ─────────────────────────────────────── */
+.profile-section {
+  margin-bottom: var(--space-4);
+}
+
+.profile-section-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+
+/* ── Profile name input ──────────────────────────────────── */
+.profile-name-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+  outline: none;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.profile-name-input:focus {
+  border-color: var(--color-whatsapp);
+  box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.15);
+}
+
+/* ── Avatar uploader ─────────────────────────────────────── */
+.avatar-uploader {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* Circular button = the clickable avatar */
+.avatar-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-border-input);
+  background-color: var(--color-bg-light);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border-color var(--transition-base),
+    transform var(--transition-fast);
+  position: relative;
+}
+
+.avatar-btn:hover {
+  border-color: var(--color-whatsapp);
+  transform: scale(1.05);
+}
+
+/* Solid border once an image is set */
+.avatar-btn:has(img) {
+  border-style: solid;
+  border-color: var(--color-whatsapp);
+}
+
+/* Uploaded image fills the circle */
+.avatar-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Placeholder wrapper shown when no image */
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Camera badge shown on hover over the avatar button */
+.avatar-camera-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-whatsapp);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.avatar-btn:hover .avatar-camera-badge {
+  opacity: 1;
+}
+
+/* Remove (×) button — appears top-right of the uploader wrapper */
+.avatar-remove-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  color: #fff;
+  border: none;
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0.85;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.avatar-remove-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* ── Initials fallback (shown in ChatHeader when no image) ── */
+.avatar-initials {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #6b7280;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
